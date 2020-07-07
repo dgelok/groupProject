@@ -1,1 +1,36 @@
 /* main styles page  */
+
+/*rich black: 0D1B2A
+oxford blue: 1b263b
+bdazzled: 415a77
+shadow blue: 778da9
+platinum: e0e1dd*/
+
+/*possible fonts
+oswald
+nunito
+rubik
+quicksand
+*/
+
+.shadowBlue{
+    background-color: #778DA9;
+}
+
+.plat{
+    background-color: #E0E1DD;
+}
+
+.richBlack{
+    background-color: #0D1B2A;
+}
+
+.varela{
+    font-family: 'Varela Round', sans-serif;
+}
+
+body{
+    margin: 0px;
+    font-family: 'Varela Round', sans-serif;
+    background-color: #778DA9;
+}
