@@ -17,8 +17,12 @@ quicksand
     background-color: #778DA9;
 }
 
-.plat{
+.header{
     background-color: #E0E1DD;
+    font-size:40px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .richBlack{
@@ -27,6 +31,10 @@ quicksand
 
 .varela{
     font-family: 'Varela Round', sans-serif;
+}
+
+.rubik{
+    font-family: 'Rubik', sans-serif;
 }
 
 body{
