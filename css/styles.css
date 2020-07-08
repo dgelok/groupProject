@@ -28,12 +28,22 @@ img{
 }
 
 .header{
-    background-color: #E0E1DD;
+    color: black;
     font-size:20px;
     display:flex;
     align-items: center;
     justify-content: center;
+    height: 10vh;
 }
+a{
+    color:white;
+}
+a:hover{
+    color:black;
+}
+
+
+
 
 .richBlack{
     background-color: #0D1B2A;

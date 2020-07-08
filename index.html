@@ -15,30 +15,61 @@
 
       <div class="container-fluid">
 
-        <!-- <div class="row mb-5 header" style="height: 15vh;">
-          Green Chip
+        <!-- <div class="row d-flex justify-content-end header mb-5 bg-success">
+
+          <div class="col-lg col-md col-sm h-100 d-flex align-items-center" style="color:white; font-size:25px;">
+            Green Chip
+          </div>
+
+          <div class="col-md-auto col-sm-auto">
+
+          </div>
+
+            <div class="col-md-auto col-sm-auto d-flex justify-content-end">
+              <ul class="nav">
+                <li class="nav-item">
+                  <a class="nav-link active" href="#">About Us</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Help</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Sign Up</a>
+                </li>
+              </ul>
+            </div>
+
         </div> -->
 
-        <div class="row d-flex justify-content-end header mb-5">
-          <ul class="nav">
-            <li class="nav-item">
-              <a class="nav-link active" href="#">About Us</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Help</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Sign Up</a>
-            </li>
-          </ul>
-        </div>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="#">Green Chip</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="#">About Us<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Help</a>
+              </li>
+
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+              <button class="btn btn-outline-success my-2 ml-auto mr-auto my-sm-0" type="submit">Sign Up</button>
+            </form>
+          </div>
+        </nav>
 
 
         <div class="row">
-          <div class="offset-4 col-4">
+          <div class="col-lg col-md-2"></div>
+          <div class="col-lg col-md-8">
             <form class="form-signin">
               <!--logo-->
-              <img src="images/greenchip.png" class="mb-5" alt="greenchip" width="200" height="200">
+              <img src="images/greenchip.png" class="mb-5 mt-5" alt="greenchip" width="200" height="200">
               <h1 class="h3 mb-3 font-weight-normal">Please Sign in</h1>
               <label for="inputUsername" class="sr-only">Username</label>
               <input type="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
@@ -54,6 +85,7 @@
               <p class="mt-5 mb-3 text-muted">©2020 by Dan, RJ, Cainan, Micah</p>
             </form>
           </div>
+          <div class="col-lg col-md-2"></div>
         </div>
 
       </div>
