@@ -12,6 +12,14 @@ nunito
 rubik
 quicksand
 */
+
+/*making the image responsive*/
+img{
+
+    max-width: 100%;
+    height: auto;
+
+}
 .bdazz{
     background-color: #415A77;
 }
@@ -21,7 +29,7 @@ quicksand
 
 .header{
     background-color: #E0E1DD;
-    font-size:40px;
+    font-size:20px;
     display:flex;
     align-items: center;
     justify-content: center;
