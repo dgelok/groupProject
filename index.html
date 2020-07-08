@@ -12,8 +12,8 @@
 </head>
   <body>
       <div class="h1">Search</div>
-      <input type="text">
-      <button class='search'>Search</button>
+      <input type="text" id="searchContent">
+      <button class='search' id="searchSubmit">Search</button>
 
       <div class="login">
         <label for="email">Login Email</label><input type="email" id="email">
@@ -38,9 +38,6 @@
     <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-firestore.js"></script>
-
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-        https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
     <!-- <script>
       // import {firebaseAPIkey, newsAPIkey, iexCloudAPIkey} from '/js/apikeys.js'

@@ -1,8 +1,8 @@
 
 import {firebaseAPIkey, newsAPIkey, iexCloudAPIkey} from './apikeys.js'
-console.log(firebaseAPIkey)
-console.log(newsAPIkey)
-console.log(firebaseAPIkey)
+// console.log(firebaseAPIkey)
+// console.log(newsAPIkey)
+// console.log(firebaseAPIkey)
 
 
 // Your web app's Firebase configuration
