@@ -1,6 +1,6 @@
 $(()=>{
     var term = "nokia";
-    var url = `https://newsapi.org/v2/everything?q=${term}&sortBy=relevancy&apiKey=820d9373d7ea4f3e9d015527ab07b473`
+    var url = `https://newsapi.org/v2/everything?q=${term}&sortBy=relevancy&apiKey=*****NEWSAPI*****`
     
     $.get(url)
     .done(function (response) {
@@ -21,7 +21,6 @@ $(()=>{
         let userPassword = $SUpassword.value;
         
         //sign the user up
-        AuthenticatorAssertionResponse.
         
     })
 })
