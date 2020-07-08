@@ -1,6 +1,6 @@
 $(()=>{
     var term = "nokia";
-    var url = `https://newsapi.org/v2/everything?q=${term}&sortBy=relevancy&apiKey=*****NEWSAPI*****`
+    var url = `https://newsapi.org/v2/everything?q=${term}&sortBy=relevancy&apiKey=***NEWSAPIKEY*****`
     
     $.get(url)
     .done(function (response) {
@@ -17,10 +17,16 @@ $(()=>{
         e.preventDefault();
 
         //get user info
-        let userID = $SUemail.value;
-        let userPassword = $SUpassword.value;
+        let userID = $SUemail[0].value;
+        let userPassword = $SUpassword[0].value;
+        // console.log(userID)
+        // console.log(userPassword)
         
         //sign the user up
-        
+        auth.createUserWithEmailAndPassword(userID, userPassword)
+        .then(cred => {
+            console.log(cred.user)
+        })
+
     })
 })
