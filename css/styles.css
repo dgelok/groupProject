@@ -21,6 +21,11 @@ img{
 
 }
 
+.container-fluid{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
 .bdazz{
     background-color: #415A77;
 }
