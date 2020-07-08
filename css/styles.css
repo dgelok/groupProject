@@ -15,15 +15,22 @@ quicksand
 
 /*making the image responsive*/
 img{
-
     max-width: 100%;
     height: auto;
+}
 
+.row{
+    margin-right:0px;
+}
+
+.col{
+    padding-right:0px;
 }
 
 .container-fluid{
     padding-left: 0px;
     padding-right: 0px;
+    margin:0px;
 }
 
 .bdazz{
@@ -44,11 +51,11 @@ img{
 }
 
 a{
-    color:white;
+    color:black;
 }
 
 a:hover{
-    color:black;
+    color:text-info;
 }
 
 .richBlack{
@@ -64,7 +71,12 @@ a:hover{
 }
 
 body{
-    margin: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
     font-family: 'Varela Round', sans-serif;
     background-color: white;
+}
+
+.navbar-toggler{
+    border:2px solid;
 }
