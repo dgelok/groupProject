@@ -1,8 +1,5 @@
-
 import {firebaseAPIkey, newsAPIkey, iexCloudAPIkey} from './apikeys.js'
-// console.log(firebaseAPIkey)
-// console.log(newsAPIkey)
-// console.log(firebaseAPIkey)
+
 
 
 // Your web app's Firebase configuration
@@ -22,3 +19,43 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 firebase.analytics();
+
+$(()=>{
+        //  Register a new user
+        var $SUemail = $('#inputUsername')
+        var $SUpassword = $('#inputPassword')
+        var $SUsubmit = $('#signin')
+        const auth = firebase.auth()
+        $SUsubmit.click((e) => {
+            e.preventDefault();
+    
+            //get user info
+            let userID = $SUemail[0].value;
+            let userPassword = $SUpassword[0].value;
+            auth.createUserWithEmailAndPassword(userID, userPassword)
+            .then(cred => {
+                console.log(cred.user)
+            })
+    
+        })
+
+
+        //   Log the user Out
+        $('#logout').click((e) =>{
+            e.preventDefault();
+            auth.signOut()
+            .then(()=>{
+                console.log("user is logged out")
+            })
+        })
+
+        // Log the user In
+        $('#signin').click((e) =>{
+            e.preventDefault();
+            // auth.signOut()
+            // .then(()=>{
+                console.log("user is logged out")
+            })
+        })
+    
+})
