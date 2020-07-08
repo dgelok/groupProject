@@ -16,8 +16,15 @@
       <button class='search'>Search</button>
 
       <div class="login">
-        <label for="email">Email</label><input type="email" id="email">
-        <label for="password">Password</label><input type="password" id="password">
+        <label for="email">Login Email</label><input type="email" id="email">
+        <label for="password">Login Password</label><input type="password" id="password">
+        <button id="loginSubmit">Log In</button>
+      </div>
+
+      <div class="signup">
+        <label for="email">Sign-up Email</label><input type="email" id="SUemail">
+        <label for="password">Sign-up Password</label><input type="password" id="SUpassword">
+        <button id="SUsubmit">Sign Up</button>
       </div>
 
 
@@ -54,8 +61,6 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
       firebase.analytics();
-      console.log(db)
-      console.log(auth)
     </script>
     <script src="js/script.js"></script>
 </body>

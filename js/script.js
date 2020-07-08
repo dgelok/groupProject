@@ -8,7 +8,20 @@ $(()=>{
         for (let i = 0; i < response.articles.length; i++) {
             // console.log(response.articles[i].title)
         }
+    })
 
+    var $SUemail = $('#SUemail')
+    var $SUpassword = $('#SUpassword')
+    var $SUsubmit = $('#SUsubmit')
+    $SUsubmit.click((e) => {
+        e.preventDefault();
+
+        //get user info
+        let userID = $SUemail.value;
+        let userPassword = $SUpassword.value;
+        
+        //sign the user up
+        AuthenticatorAssertionResponse.
         
     })
 })
