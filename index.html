@@ -42,11 +42,12 @@
     <!-- TODO: Add SDKs for Firebase products that you want to use
         https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
-
-    <script>
+    <!-- <script>
+      // import {firebaseAPIkey, newsAPIkey, iexCloudAPIkey} from '/js/apikeys.js'
+      // console.log(firebaseAPIkey)
       // Your web app's Firebase configuration
       var firebaseConfig = {
-        apiKey: "*****FIREBASEAPIKEY******",
+        apiKey: firebaseAPIkey,
         authDomain: "stock-market-playground.firebaseapp.com",
         databaseURL: "https://stock-market-playground.firebaseio.com",
         projectId: "stock-market-playground",
@@ -61,7 +62,8 @@
       const auth = firebase.auth();
       const db = firebase.firestore();
       firebase.analytics();
-    </script>
-    <script src="js/script.js"></script>
+    </script> -->
+    <script type="module" src='js/firebase.js'></script>
+    <script type="module" src="js/script.js"></script>
 </body>
 </html>

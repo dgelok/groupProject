@@ -1,6 +1,15 @@
+import {firebaseAPIkey, newsAPIkey, iexCloudAPIkey} from './apikeys.js'
+    console.log(firebaseAPIkey)
+
+
+
 $(()=>{
+    
+    
+    // News API search
+
     var term = "nokia";
-    var url = `https://newsapi.org/v2/everything?q=${term}&sortBy=relevancy&apiKey=***NEWSAPIKEY*****`
+    var url = `https://newsapi.org/v2/everything?q=${term}&sortBy=relevancy&apiKey=${newsAPIkey}`
     
     $.get(url)
     .done(function (response) {
@@ -10,6 +19,7 @@ $(()=>{
         }
     })
 
+    // Firebase SignUP
     var $SUemail = $('#SUemail')
     var $SUpassword = $('#SUpassword')
     var $SUsubmit = $('#SUsubmit')
