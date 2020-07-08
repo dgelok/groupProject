@@ -16,27 +16,6 @@ $(()=>{
     .done(function(response){
         console.log(response)
     })
-    // $.get("https://cloud.iexapis.com/stable/stock/aapl/quote/latestPrice?token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
-    // .done(function(response){
-    //     console.log(response)
-    // })
-let updatePrice = (stockSymbol)  =>{
-    $("#stockPrice").html(`${
-        setInterval(() => {
-            fetch(`https://cloud.iexapis.com/stable/stock/${stockSymbol}/quote/?token=${APIurls[2]}`)
-            .then(response => response.json())
-            .then(json => {
-                console.log(json.latestPrice)
-                console.log(json.companyName)
-                return `Latest Stock Price: ${json.latestPrice}`;
-            })
-            }, 5000)
-
-    }`) 
-    
-}
-
-
 
 function createCompanyData(compArr){
    
@@ -80,7 +59,7 @@ function createCompanyData(compArr){
       
       
       if (patt.test(company.name.toUpperCase()) && input.value.length > 0) {
-          $("#nameList").append(`<li id="${company.symbol}">Company Name: ${company.name}<br> Symbol: ${company.symbol}</li>`)
+         $("#nameList").append(`<li id="${company.symbol}">Company Name: ${company.name}<br> Symbol: ${company.symbol}</li>`)
         console.log(company)
       } 
     }
@@ -97,7 +76,11 @@ function createCompanyData(compArr){
           
         })
       .then(json => {
+          console.log(json[0])
+          console.log(json[1])
+             console.log(json[0].companyName)
              console.log(json)
+             console.log(json[1].latestPrice)
             $("#companyDataContainer").append(
             `<h3>${json[0].companyName}</h3>
             <span id="stockPrice">Latest Stock Price: ${json[1].latestPrice}</span>
@@ -106,19 +89,98 @@ function createCompanyData(compArr){
             <p>${json[0].description}</p>
             `
         )
-        updatePrice(json[1].symbol)
+
+        // Calls setINterval function to update Latest Stock Price
+        setInterval(() => {
+            fetch(`https://cloud.iexapis.com/stable/stock/${json[1].symbol}/quote/?token=${APIurls[2]}`)
+            .then(response => response.json())
+            .then(json => {
+                console.log(json.latestPrice)
+                console.log(json.companyName)
+                $("#stockPrice").html(`Latest Stock Price: ${json.latestPrice}`) ;
+            })
+            }, 500000)
       }) 
-    // $.get(`https://cloud.iexapis.com/stable/stock/${stockSymbol}/company/?token=${APIurls[2]}`)
-    // .done(function(response){
-    //     console.log(response)
-    //     $("#companyDataContainer").append(
-    //         `<h3>${response.companyName}</h3>
-    //         <h6>Company Description</h6>
-    //         <p>${response.description}</p>
-    //         `
-    //     )
-    // })
+   
   })
 
+//   function getCurrentStockPrice(symbol){
+//     fetch(`https://cloud.iexapis.com/stable/stock/${symbol}/quote/?token=${APIurls[2]}`)
+//     .then(response => response.json())
+//     .then(json => {
+//         console.log(json.latestPrice)
+//         return json.latestPrice;
+        
+        
+//     })
+//   }
 
+
+
+
+
+// FILLING MOCK PORTFOLIO CHART WITH DATA
+// var holdings = [
+//     {
+//         name : "Apple Inc",
+//         symbol : "AAPL",
+//         totalShares : 3,
+//         getTotal : async function() {
+            
+//             //return getCurrentStockPrice(this.symbol) * this.totalShares
+//            let currentPrice = getCurrentStockPrice(this.symbol)
+            
+//         }
+
+//     }
+// ]
+// holdings[0].getTotal()
+var holdings = []
+class holding {
+    
+    constructor(name, symbol, totalShares){
+        this.name = name;
+        this.symbol = symbol;
+        this.totalShares = totalShares;
+        holdings.push(this)
+        
+    }
+    
+    
+
+}
+
+let apple = new holding("Apple Inc","AAPL",3)
+let msft = new holding("Microsoft","MSFT",4)
+let tsla = new holding("Tesla","tsla",4)
+let fb = new holding("Facebook","FB",5)
+
+async function getData(){
+    let i = 1;
+    for(let comp of holdings){
+        let response = await fetch(`https://cloud.iexapis.com/stable/stock/${comp.symbol}/quote/?token=${APIurls[2]}`)
+        let json = await response.json();
+        let currentPrice = json.latestPrice;
+        $("#tbody").append(`
+        <tr>
+        <th scope="row">${i}</th>
+        <td>${comp.name}</td>
+        <td>${comp.totalShares}</td>
+        <td>${currentPrice}</td>
+        <td>${Number(currentPrice) * comp.totalShares}</td>
+      </tr>
+        `)
+        console.log(json);
+        i++;
+    }
+   
+}
+
+getData();   
+
+            
+        
+       
+
+// console.log(apple.totalHoldingValue)
 })
