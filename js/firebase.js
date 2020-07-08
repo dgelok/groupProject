@@ -73,7 +73,7 @@ $(()=>{
             var password = $('#inputPassword')[0].value
             auth.signInWithEmailAndPassword(id, password)
             .then((cred)=>{
-                // console.log(cred.user)
+                window.location.href = "./dashboard.html"
             })
             
         })
