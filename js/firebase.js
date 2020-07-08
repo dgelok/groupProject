@@ -22,9 +22,9 @@ firebase.analytics();
 
 $(()=>{
         //  Register a new user
-        var $SUemail = $('#inputUsername')
-        var $SUpassword = $('#inputPassword')
-        var $SUsubmit = $('#signin')
+        var $SUemail = $('#registerUsername')
+        var $SUpassword = $('#registerPassword')
+        var $SUsubmit = $('#registerSubmit')
         const auth = firebase.auth()
         $SUsubmit.click((e) => {
             e.preventDefault();
@@ -50,12 +50,17 @@ $(()=>{
         })
 
         // Log the user In
-        $('#signin').click((e) =>{
+        let signin = $('#signin')
+        // console.log(signin)
+        signin.click((e) =>{
             e.preventDefault();
-            // auth.signOut()
-            // .then(()=>{
-                console.log("user is logged out")
+            // alert("you clicked!")
+            var id = $('#inputUsername')[0].value
+            var password = $('#inputPassword')[0].value
+            auth.signInWithEmailAndPassword(id, password)
+            .then((cred)=>{
+                console.log(cred.user)
             })
+            
         })
-    
 })
