@@ -2,6 +2,7 @@ import {firebaseAPIkey, newsAPIkey, iexCloudAPIkey} from './apikeys.js'
 
 
 
+
 // Your web app's Firebase configuration
 var firebaseConfig = {
 apiKey: firebaseAPIkey,
@@ -21,11 +22,27 @@ const db = firebase.firestore();
 firebase.analytics();
 
 $(()=>{
+
+        const auth = firebase.auth()
+    
+    
+        // listen for authentication status changes
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                console.log(`user logged in: ${user.email}`)
+                // console.log(user)
+            }
+            else {
+                console.log('user logged out')
+            }
+        })
+        
+        
         //  Register a new user
         var $SUemail = $('#registerUsername')
         var $SUpassword = $('#registerPassword')
         var $SUsubmit = $('#registerSubmit')
-        const auth = firebase.auth()
+        
         $SUsubmit.click((e) => {
             e.preventDefault();
     
@@ -44,9 +61,6 @@ $(()=>{
         $('#logout').click((e) =>{
             e.preventDefault();
             auth.signOut()
-            .then(()=>{
-                console.log("user is logged out")
-            })
         })
 
         // Log the user In
@@ -59,7 +73,7 @@ $(()=>{
             var password = $('#inputPassword')[0].value
             auth.signInWithEmailAndPassword(id, password)
             .then((cred)=>{
-                console.log(cred.user)
+                // console.log(cred.user)
             })
             
         })
