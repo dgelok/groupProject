@@ -20,9 +20,11 @@ img{
     height: auto;
 
 }
+
 .bdazz{
     background-color: #415A77;
 }
+
 .shadowBlue{
     background-color: #778DA9;
 }
@@ -35,15 +37,14 @@ img{
     justify-content: center;
     height: 10vh;
 }
+
 a{
     color:white;
 }
+
 a:hover{
     color:black;
 }
-
-
-
 
 .richBlack{
     background-color: #0D1B2A;
