@@ -8,15 +8,34 @@ $(()=>{
     // .done(function(response){
     //     console.log(response)
     // })
-    // $.get("https://cloud.iexapis.com/stable/stock/aapl/quote/?token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
-    // .done(function(response){
-    //     console.log(response)
-    // })
+    $.get("https://cloud.iexapis.com/stable/stock/aapl/quote/?token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
+    .done(function(response){
+        console.log(response)
+    })
+    $.get("https://cloud.iexapis.com/stable/stock/aapl/company/?token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
+    .done(function(response){
+        console.log(response)
+    })
     // $.get("https://cloud.iexapis.com/stable/stock/aapl/quote/latestPrice?token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
     // .done(function(response){
     //     console.log(response)
     // })
- 
+let updatePrice = (stockSymbol)  =>{
+    $("#stockPrice").html(`${
+        setInterval(() => {
+            fetch(`https://cloud.iexapis.com/stable/stock/${stockSymbol}/quote/?token=${APIurls[2]}`)
+            .then(response => response.json())
+            .then(json => {
+                console.log(json.latestPrice)
+                console.log(json.companyName)
+                return `Latest Stock Price: ${json.latestPrice}`;
+            })
+            }, 5000)
+
+    }`) 
+    
+}
+
 
 
 function createCompanyData(compArr){
@@ -48,7 +67,8 @@ function createCompanyData(compArr){
 
 
   $('#searchField').keyup(function () {
-    $("#nameList").html("");  
+    $("#nameList").html("");
+    $("#companyDataContainer").html("");
     let input = document.getElementById('searchField');
     let patt = new RegExp(`^${input.value.toUpperCase()}`);
     
@@ -70,10 +90,34 @@ function createCompanyData(compArr){
   $("#nameList").click(function(e){
       console.log(e.target.id)
       let stockSymbol = e.target.id
-    $.get(`https://cloud.iexapis.com/stable/stock/${stockSymbol}/batch?types=quote,news,chart&range=1m&last=10&token=${APIurls[2]}`)
-    .done(function(response){
-        console.log(response)
-    })
+      Promise.all([fetch(`https://cloud.iexapis.com/stable/stock/${stockSymbol}/company/?token=${APIurls[2]}`),
+      fetch(`https://cloud.iexapis.com/stable/stock/${stockSymbol}/quote/?token=${APIurls[2]}`)])
+      .then(results => {
+        return Promise.all(results.map(response => response.json()))
+          
+        })
+      .then(json => {
+             console.log(json)
+            $("#companyDataContainer").append(
+            `<h3>${json[0].companyName}</h3>
+            <span id="stockPrice">Latest Stock Price: ${json[1].latestPrice}</span>
+            <br><br>    
+            <h6>Company Description</h6>
+            <p>${json[0].description}</p>
+            `
+        )
+        updatePrice(json[1].symbol)
+      }) 
+    // $.get(`https://cloud.iexapis.com/stable/stock/${stockSymbol}/company/?token=${APIurls[2]}`)
+    // .done(function(response){
+    //     console.log(response)
+    //     $("#companyDataContainer").append(
+    //         `<h3>${response.companyName}</h3>
+    //         <h6>Company Description</h6>
+    //         <p>${response.description}</p>
+    //         `
+    //     )
+    // })
   })
 
 
