@@ -1,1 +1,70 @@
 /* main styles page  */
+
+/*rich black: 0D1B2A
+oxford blue: 1b263b
+bdazzled: 415a77
+shadow blue: 778da9
+platinum: e0e1dd*/
+
+/*possible fonts
+oswald
+nunito
+rubik
+quicksand
+*/
+
+/*making the image responsive*/
+img{
+
+    max-width: 100%;
+    height: auto;
+
+}
+
+.container-fluid{
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.bdazz{
+    background-color: #415A77;
+}
+
+.shadowBlue{
+    background-color: #778DA9;
+}
+
+.header{
+    color: black;
+    font-size:20px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    height: 10vh;
+}
+
+a{
+    color:white;
+}
+
+a:hover{
+    color:black;
+}
+
+.richBlack{
+    background-color: #0D1B2A;
+}
+
+.varela{
+    font-family: 'Varela Round', sans-serif;
+}
+
+.rubik{
+    font-family: 'Rubik', sans-serif;
+}
+
+body{
+    margin: 0px;
+    font-family: 'Varela Round', sans-serif;
+    background-color: white;
+}
