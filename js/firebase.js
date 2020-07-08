@@ -1,5 +1,5 @@
 var firebaseConfig = {
-    apiKey: "AIzaSyDfbgvNY5XxEmdDk3KcOI-w0MEBMhMHm-Y",
+    apiKey: "***FIREBASEAPIKEY***",
     authDomain: "stock-market-playground.firebaseapp.com",
     databaseURL: "https://stock-market-playground.firebaseio.com",
     projectId: "stock-market-playground",
