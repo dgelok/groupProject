@@ -2,6 +2,7 @@ import APIurls from "./config.js"
 $(()=>{
     
     var companies = [] 
+    
   
     
     // $.get("https://cloud.iexapis.com/stable/stock/aapl/batch?types=quote,news,chart&range=1m&last=10&token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
@@ -120,21 +121,7 @@ function createCompanyData(compArr){
 
 
 // FILLING MOCK PORTFOLIO CHART WITH DATA
-// var holdings = [
-//     {
-//         name : "Apple Inc",
-//         symbol : "AAPL",
-//         totalShares : 3,
-//         getTotal : async function() {
-            
-//             //return getCurrentStockPrice(this.symbol) * this.totalShares
-//            let currentPrice = getCurrentStockPrice(this.symbol)
-            
-//         }
 
-//     }
-// ]
-// holdings[0].getTotal()
 var holdings = []
 class holding {
     
@@ -146,14 +133,18 @@ class holding {
         
     }
     
-    
-
 }
 
 let apple = new holding("Apple Inc","AAPL",3)
 let msft = new holding("Microsoft","MSFT",4)
 let tsla = new holding("Tesla","tsla",4)
 let fb = new holding("Facebook","FB",5)
+
+class user{
+    constructor(cash){
+        this.cash = cash
+    }
+}
 
 async function getData(){
     let i = 1;
@@ -176,7 +167,7 @@ async function getData(){
    
 }
 
-getData();   
+//getData();   
 
             
         
