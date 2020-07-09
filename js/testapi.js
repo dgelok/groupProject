@@ -61,7 +61,7 @@ function createCompanyData(compArr){
     let count = 0;
     for (let company of companies) {
 
-      if (patt.test(company.name.toUpperCase()) && input.value.length > 0 && count<=20) {
+      if (patt.test(company.name.toUpperCase()) && input.value.length > 0 && count<=10) {
          $("#nameList").append(`<li id="${company.symbol}">${company.name} (${company.symbol})</li>`)
         console.log(company)
         count++;
