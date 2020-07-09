@@ -100,12 +100,15 @@ function createCompanyData(compArr){
                 How many shares would you like to purchase
                   <input type="text" id="numSharesTextField"><button id="buyShares">Buy Shares</button> 
                 `)
+                $("#buyShares").click(function(){
+                    let numPurchasedShares = Number($("#numSharesTextField").val());
+                    currentUser.createNewHolding(json[0].companyName,stockSymbol, numPurchasedShares)
+                    currentUser.getData();
+                    
+                })
+
             })
-            $("#buyShares").click(function(){
-                console.log($("#numSharesTextFeild"));
-                currentUser.createNewHolding(json[0].companyName,stockSymbol,)
-                
-            })
+            
 
 
 
@@ -124,6 +127,8 @@ function createCompanyData(compArr){
       }) 
    
   })
+
+ 
 
 //   function getCurrentStockPrice(symbol){
 //     fetch(`https://cloud.iexapis.com/stable/stock/${symbol}/quote/?token=${APIurls[2]}`)
@@ -189,8 +194,11 @@ class User{
         console.log(this.currentNetWorth)
     }
     async getData(){
+        //$("#cashTableData").html("")
+        $("#tbody").html("")
         let totalPortfolioValue = this.cash;
         $("#cashTableData").append(`
+        <td>Cash</td>
         <td></td>
         <td></td>
         <td>$${this.cash}</td>
