@@ -1,7 +1,6 @@
 import {firebaseAPIkey, newsAPIkey, iexCloudAPIkey} from './apikeys.js'
 
-
-
+ 
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -24,6 +23,7 @@ firebase.analytics();
 $(()=>{
 
         const auth = firebase.auth()
+        const db = firebase.firestore()
     
     
         // listen for authentication status changes
@@ -38,30 +38,39 @@ $(()=>{
         })
         
         
+        
         //  Register a new user
         var $SUemail = $('#registerUsername')
         var $SUpassword = $('#registerPassword')
+        var $SUpasswordConfirm = $('#passwordConfirm')
         var $SUsubmit = $('#registerSubmit')
+        
         
         $SUsubmit.click((e) => {
             e.preventDefault();
-    
             //get user info
             let userID = $SUemail[0].value;
             let userPassword = $SUpassword[0].value;
-            auth.createUserWithEmailAndPassword(userID, userPassword)
-            .then(cred => {
-                console.log(cred.user)
-            })
+            let passwordConf = $SUpasswordConfirm[0].value
+            if ($SUpassword[0].value == $SUpasswordConfirm[0].value) {
+                auth.createUserWithEmailAndPassword(userID, userPassword)
+                .then(cred => {
+                    // console.log(cred.user)
+                    $('#exampleModal').modal('toggle')
+                }).catch(function(e) {
+                    // console.log(e.message)
+                    $('#modalerror')[0].innerHTML = e.message
+                })
+            }
+            else {
+                $('#modalerror')[0].innerHTML = "Passwords do not match"
+            }
     
         })
 
 
         //   Log the user Out
-        $('#logout').click((e) =>{
-            e.preventDefault();
-            auth.signOut()
-        })
+        
 
         // Log the user In
         let signin = $('#signin')
@@ -71,10 +80,25 @@ $(()=>{
             // alert("you clicked!")
             var id = $('#inputUsername')[0].value
             var password = $('#inputPassword')[0].value
-            auth.signInWithEmailAndPassword(id, password)
-            .then((cred)=>{
-                window.location.href = "./dashboard.html"
+            auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(function() {
+                auth.signInWithEmailAndPassword(id, password)
+                    .then((cred)=>{
+                        // console.log(cred)
+                        window.location.href = "./dashboard.html"
+                }).catch(function(e) {
+                    // console.log(e.message)
+                    $('#error')[0].innerHTML = e.message
+                })
             })
-            
+        })
+
+        // Get data from firebase
+        db.collection('users').get().then(snapshot => {
+            let docs = snapshot.docs;
+            docs.forEach(piece => {
+                const info = piece.data();
+                // console.log(info)
+            })
         })
 })

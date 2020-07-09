@@ -45,11 +45,12 @@
             <form class="form-signin">
               <!--logo-->
               <img src="images/greenchip.png" class="mb-5 mt-5" alt="greenchip" width="200" height="200">
-              <h1 class="h3 mb-3 font-weight-normal">Sign in</h1>
+              <h1 class="h3 mb-3 font-weight-normal" id="invite">Sign in</h1>
               <label for="inputUsername" class="sr-only">Username</label>
               <input type="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
               <label for="inputPassword" class="sr-only">Password</label>
               <input type="password" id="inputPassword" class="form-control mt-1" placeholder="Password" required>
+              <div id="error" class="text-danger"></div>
               <div class="checkbox mb-3 mt-3">
                 <label for="checkbox">
                   <input type="checkbox" value="remember-me">
@@ -78,21 +79,22 @@
                 <form>
                   <div class="form-group">
                     <label for="recipient-name" class="col-form-label d-flex justify-content-start">Email</label>
-                    <input type="text" class="form-control" id="email">
+                    <input type="text" class="form-control" id="registerUsername">
                   </div>
                   <div class="form-group">
                     <label for="password" class="col-form-label d-flex justify-content-start">Create Password</label>
-                    <input type="password" class="form-control" id="password"></input>
+                    <input type="password" class="form-control" id="registerPassword"></input>
                   </div>
                   <div class="form-group">
                     <label for="password" class="col-form-label d-flex justify-content-start">Confirm Password</label>
-                    <input type="password" class="form-control" id="confirmPass"></input>
+                    <input type="password" class="form-control" id="passwordConfirm"></input>
+                    <div id="modalerror" class="text-danger"></div>
                   </div>
                 </form>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Create Account</button>
+                <button type="button" class="btn btn-primary" id="registerSubmit">Create Account</button>
               </div>
             </div>
           </div>
