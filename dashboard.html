@@ -12,7 +12,34 @@
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Rubik&family=Varela+Round&display=swap" rel="stylesheet">
     <script src="https://use.fontawesome.com/fd3bcad7e6.js"></script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Companies ', 'Amount invested'],
+          ['Apple',      1],
+          ['Facebook',      1],
+          ['S&P 500',  1],
+          ['TSLA', 1],
+          ['TWTR',    1]
+        ]);
+
+        var options = {
+          title: 'My Investments'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>
     <script type="module" src="./js/backFireBase.js"></script>
+
   </head>
   <body>
 
@@ -66,7 +93,7 @@
                 <table class="table table-success">
                     <thead class="table-dark">
                       <tr>
-                        <th scope="col">Company</th>
+                        <th scope="col">Company (Ticker)</th>
                         <th scope="col">Shares</th>
                         <th scope="col">Price</th>
                         <th scope="col">Total</th>
@@ -81,7 +108,7 @@
                     </tbody>
                   </table>
               </div>
-              <div class="col-lg-2 col-sm-auto">
+              <div class="col-lg-2 col-sm-1">
 
               </div>
             
@@ -92,30 +119,29 @@
             <div class="col-lg-2 col-sm-auto"></div>
             <div class="col d-flex justify-content-start">
               <button class="btn btn-outline-dark btn-lg mr-2">Refresh Dash</button>
-              <button class="btn btn-outline-success btn-lg  mr-2">Buy</button>
+              <a href="checkout.html"><button class="btn btn-outline-success btn-lg  mr-2">Buy</button></a>
               <button class="btn btn-outline-primary btn-lg ">Sell</button>
             </div>
             <div class="col-lg-2 col-sm-auto"></div>
           </div>
 
-          <div class="row mt-5 ml-5 mr-5" style="height:100vh;">
-              <div class="col-lg-6 d-flex bg-info">
-                line graph place holder
+          <div class="row mt-5 ml-5 mr-5" style="height:60vh;">
+              <!-- <div class="col-lg-2 col-sm-auto pr-0 pl-0"></div> -->
+
+              <div class="col-lg-5 d-flex d-flex justify-content-center mt-3 pr-0 pl-0">
+                <img id="line" src="images/linegraph.png" alt="earnings">
               </div>
-              <div class="col-lg-6 bg-danger">
-                pie chart place holder
+
+              <div class="col-sm-0 col-md-0 col-lg-2"></div>
+
+              <div id="piechart" class="col-lg-5 pl-0 pr-0 mt-3 mr-0 d-flex justify-content-center">
+                
               </div>
+
+              <!-- <div class="col-lg-2 col-sm-auto pr-0 pl-0"></div> -->
           </div>
 
-          <footer>
-              <div class="row" style="height:15vh;border-top:1px solid black;">
-                  <div class="col-4"></div>
-                  <div class="col d-flex justify-content-center align-items-center">footer text</div>
-                  <div class="col-4"></div>
 
-              </div>
-
-          </footer>
 
           <!--modal-->
           <div class="modal fade" id="areyousure" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
