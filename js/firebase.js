@@ -48,7 +48,7 @@ $(()=>{
         
         $SUsubmit.click((e) => {
             e.preventDefault();
-\            //get user info
+            //get user info
             let userID = $SUemail[0].value;
             let userPassword = $SUpassword[0].value;
             let passwordConf = $SUpasswordConfirm[0].value
@@ -67,10 +67,7 @@ $(()=>{
 
 
         //   Log the user Out
-        $('#logout').click((e) =>{
-            e.preventDefault();
-            auth.signOut()
-        })
+        
 
         // Log the user In
         let signin = $('#signin')
