@@ -42,18 +42,26 @@ $(()=>{
         //  Register a new user
         var $SUemail = $('#registerUsername')
         var $SUpassword = $('#registerPassword')
+        var $SUpasswordConfirm = $('#passwordConfirm')
         var $SUsubmit = $('#registerSubmit')
+        
         
         $SUsubmit.click((e) => {
             e.preventDefault();
-    
-            //get user info
+\            //get user info
             let userID = $SUemail[0].value;
             let userPassword = $SUpassword[0].value;
-            auth.createUserWithEmailAndPassword(userID, userPassword)
-            .then(cred => {
-                console.log(cred.user)
-            })
+            let passwordConf = $SUpasswordConfirm[0].value
+            if ($SUpassword[0].value == $SUpasswordConfirm[0].value) {
+                auth.createUserWithEmailAndPassword(userID, userPassword)
+                .then(cred => {
+                    console.log(cred.user)
+
+                })
+            }
+            else {
+                console.log("Passwords do not match")
+            }
     
         })
 
