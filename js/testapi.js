@@ -9,14 +9,14 @@ $(()=>{
     // .done(function(response){
     //     console.log(response)
     // })
-    $.get("https://cloud.iexapis.com/stable/stock/aapl/quote/?token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
-    .done(function(response){
-        console.log(response)
-    })
-    $.get("https://cloud.iexapis.com/stable/stock/aapl/company/?token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
-    .done(function(response){
-        console.log(response)
-    })
+    // $.get("https://cloud.iexapis.com/stable/stock/aapl/quote/?token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
+    // .done(function(response){
+    //     console.log(response)
+    // })
+    // $.get("https://cloud.iexapis.com/stable/stock/aapl/company/?token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
+    // .done(function(response){
+    //     console.log(response)
+    // })
 
 function createCompanyData(compArr){
    
@@ -66,7 +66,9 @@ function createCompanyData(compArr){
     }
   });
 
+ 
 
+ 
   $("#nameList").click(function(e){
       console.log(e.target.id)
       let stockSymbol = e.target.id
@@ -83,13 +85,31 @@ function createCompanyData(compArr){
              console.log(json)
              console.log(json[1].latestPrice)
             $("#companyDataContainer").append(
-            `<h3>${json[0].companyName}</h3>
+            `<button id="buyButton">Buy Stock</button>
+            <h3>${json[0].companyName}</h3>
             <span id="stockPrice">Latest Stock Price: ${json[1].latestPrice}</span>
             <br><br>    
             <h6>Company Description</h6>
             <p>${json[0].description}</p>
-            `
-        )
+            
+            `)
+            $("#buyButton").click(function(){
+            
+                $("#companyDataContainer").html(`
+                Comapny: ${json[0].companyName} Price Per Share: ${json[1].latestPrice}
+                How many shares would you like to purchase
+                  <input type="text" id="numSharesTextField"><button id="buyShares">Buy Shares</button> 
+                `)
+            })
+            $("#buyShares").click(function(){
+                console.log($("#numSharesTextFeild"));
+                currentUser.createNewHolding(json[0].companyName,stockSymbol,)
+                
+            })
+
+
+
+        
 
         // Calls setINterval function to update Latest Stock Price
         setInterval(() => {
@@ -122,59 +142,112 @@ function createCompanyData(compArr){
 
 // FILLING MOCK PORTFOLIO CHART WITH DATA
 
-var holdings = []
-class holding {
+
+// HOLDING CLASS TO CREATE INSTANCES WHEN STOCK IS PURCHASED
+class Holding {
     
     constructor(name, symbol, totalShares){
         this.name = name;
         this.symbol = symbol;
         this.totalShares = totalShares;
-        holdings.push(this)
-        
-    }
+        }
     
 }
 
-let apple = new holding("Apple Inc","AAPL",3)
-let msft = new holding("Microsoft","MSFT",4)
-let tsla = new holding("Tesla","tsla",4)
-let fb = new holding("Facebook","FB",5)
 
-class user{
-    constructor(cash, holdings, userName){
-        this.userName = userName
-        this.cash = cash
-        this.holdings = holdings
-        this.netWorthHistory = []
+
+
+
+// USER CLASS FOR CREATING NEW USERS
+class User{
+    constructor(userName, cash,currentNetWorth){
+        this.userName = userName;
+        this.cash = cash;
+        this.currentNetWorth = [currentNetWorth];
+        this.holdings = [];
     }
-}
-
-async function getData(){
-    let i = 1;
-    for(let comp of holdings){
-        let response = await fetch(`https://cloud.iexapis.com/stable/stock/${comp.symbol}/quote/?token=${APIurls[2]}`)
-        let json = await response.json();
-        let currentPrice = json.latestPrice;
-        $("#tbody").append(`
-        <tr>
-        <th scope="row">${i}</th>
-        <td>${comp.name}</td>
-        <td>${comp.totalShares}</td>
-        <td>${currentPrice}</td>
-        <td>${Number(currentPrice) * comp.totalShares}</td>
-      </tr>
+    createNewHolding(name, symbol, numShares){
+        let newHolding = new Holding(name,symbol,numShares)
+        // let msft = new Holding("Microsoft","MSFT",4)
+        // let tsla = new Holding("Tesla","tsla",4)
+        // let fb = new Holding("Facebook","FB",5)
+        this.holdings.push(newHolding)
+    }
+    async getNetWorth(){
+        let currentTotal = 0;
+        for(let comp of this.holdings){
+            let response = await fetch(`https://cloud.iexapis.com/stable/stock/${comp.symbol}/quote/?token=${APIurls[2]}`)
+            let json = await response.json();
+            let currentPrice = json.latestPrice;
+            let currentShareTotal = currentPrice * comp.totalShares
+            console.log(`Total current value for ${comp.name} with 
+            ${comp.totalShares} is ${currentShareTotal}
+            `)
+            currentTotal += currentShareTotal
+        }
+        this.currentNetWorth.push(currentTotal + this.cash)
+        console.log(this.currentNetWorth)
+    }
+    async getData(){
+        let totalPortfolioValue = this.cash;
+        $("#cashTableData").append(`
+        <td></td>
+        <td></td>
+        <td>$${this.cash}</td>
         `)
-        console.log(json);
-        i++;
+       
+        for(let comp of this.holdings){
+            let response = await fetch(`https://cloud.iexapis.com/stable/stock/${comp.symbol}/quote/?token=${APIurls[2]}`)
+            let json = await response.json();
+            let currentPrice = json.latestPrice;
+            $('#totalPortfolioValue').html(`
+                Portfolio: $${(totalPortfolioValue += (currentPrice * comp.totalShares)).toFixed(2)}
+            `)
+            $("#tbody").append(`
+            <tr>
+            
+            <td>${comp.name} (${comp.symbol})</td>
+            <td>${comp.totalShares}</td>
+            <td>$${Number(currentPrice).toFixed(2)}</td>
+            <td>$${(Number(currentPrice) * comp.totalShares).toFixed(2)}</td>
+          </tr>
+            `)
+            console.log(json);
+           
+        }
+       
+       
     }
-   
+
 }
 
-getData();   
-
-            
+// CREATING NEW MOCK USER DATA
+function createNewUser(userName){
+    let newUser = new User(userName,10000,10000)
+    if(localStorage.getItem(userName) == null){
+        localStorage.setItem(`${newUser.userName}`, JSON.stringify(dan))
+        return newUser;
         
-       
+    }else{
+        console.log(localStorage.getItem(userName))
+        let parsedUserObj = JSON.parse(localStorage.getItem(userName))
+        console.log(parsedUserObj);
+        let userCash = parsedUserObj.cash
+        let user = parsedUserObj.userName
+        let userCurrentNetWorth = parsedUserObj.currentNetWorth
+        let currentUser = new User(user,userCash,userCurrentNetWorth)
+        
+        //currentUser.getNetWorth();
+        //currentUser.getData()  
+        return currentUser;
+    }
+    
+}
+let currentUser = createNewUser("Dan");
+// currentUser.createNewHolding("Apple","AAPL", 3)
+currentUser.createNewHolding("Microsoft","MSFT", 4)
+currentUser.createNewHolding("Tesla","TSLA", 6)
+currentUser.getData()
+console.log(currentUser);
 
-// console.log(apple.totalHoldingValue)
 })
