@@ -38,6 +38,7 @@ $(()=>{
         })
         
         
+        
         //  Register a new user
         var $SUemail = $('#registerUsername')
         var $SUpassword = $('#registerPassword')
@@ -71,12 +72,15 @@ $(()=>{
             // alert("you clicked!")
             var id = $('#inputUsername')[0].value
             var password = $('#inputPassword')[0].value
-            auth.signInWithEmailAndPassword(id, password)
-            .then((cred)=>{
-                
-                // window.location.href = "./dashboard.html"
+            auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
+            .then(function() {
+                auth.signInWithEmailAndPassword(id, password)
+                    .then((cred)=>{
+                        console.log(cred)
+                    
+                    // window.location.href = "./dashboard.html"
+                })
             })
-            
         })
 
         // Get data from firebase
@@ -84,7 +88,7 @@ $(()=>{
             let docs = snapshot.docs;
             docs.forEach(piece => {
                 const info = piece.data();
-                console.log(info)
+                // console.log(info)
             })
         })
 })
