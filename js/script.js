@@ -5,11 +5,9 @@ $(()=>{
     
     $('#registerSubmit').click((e)=>{
         $('#registerUsername')[0].value = ""
-        $('#registerPassword').val() = ""
-        $('#passwordConfirm').val() = ""
-        // $('#registerPassword').value = ""
-        // $('#passwordConfirm').value = ""
-        // $('#registerSubmit').value = ""
+        $('#registerPassword')[0].value = ""
+        $('#passwordConfirm')[0].value = ""
+        
     })
 
 
