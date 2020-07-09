@@ -1,7 +1,6 @@
 import {firebaseAPIkey, newsAPIkey, iexCloudAPIkey} from './apikeys.js'
 
-
-
+ 
 
 // Your web app's Firebase configuration
 var firebaseConfig = {
@@ -24,6 +23,7 @@ firebase.analytics();
 $(()=>{
 
         const auth = firebase.auth()
+        const db = firebase.firestore()
     
     
         // listen for authentication status changes
@@ -73,8 +73,18 @@ $(()=>{
             var password = $('#inputPassword')[0].value
             auth.signInWithEmailAndPassword(id, password)
             .then((cred)=>{
-                window.location.href = "./dashboard.html"
+                
+                // window.location.href = "./dashboard.html"
             })
             
+        })
+
+        // Get data from firebase
+        db.collection('users').get().then(snapshot => {
+            let docs = snapshot.docs;
+            docs.forEach(piece => {
+                const info = piece.data();
+                console.log(info)
+            })
         })
 })
