@@ -55,7 +55,8 @@ $(()=>{
             if ($SUpassword[0].value == $SUpasswordConfirm[0].value) {
                 auth.createUserWithEmailAndPassword(userID, userPassword)
                 .then(cred => {
-                    console.log(cred.user)
+                    // console.log(cred.user)
+                    $('#exampleModal').modal('toggle')
                 }).catch(function(e) {
                     // console.log(e.message)
                     $('#modalerror')[0].innerHTML = e.message
