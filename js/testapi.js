@@ -141,8 +141,9 @@ let tsla = new holding("Tesla","tsla",4)
 let fb = new holding("Facebook","FB",5)
 
 class user{
-    constructor(cash){
+    constructor(cash, holdings){
         this.cash = cash
+        this.holdings = holdings
     }
 }
 
@@ -167,7 +168,7 @@ async function getData(){
    
 }
 
-//getData();   
+getData();   
 
             
         
