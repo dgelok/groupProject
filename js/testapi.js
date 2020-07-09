@@ -1,7 +1,12 @@
-import APIurls from "./config.js"
+//import APIurls from "./config.js"
 $(()=>{
     
-    var companies = [] 
+    var companies = []
+    var APIurls = [
+        "https://pkgstore.datahub.io/core/nyse-other-listings/nyse-listed_json/data/e8ad01974d4110e790b227dc1541b193/nyse-listed_json.json",
+        "https://pkgstore.datahub.io/core/nasdaq-listings/nasdaq-listed-symbols_json/data/5c10087ff8d283899b99f1c126361fa7/nasdaq-listed-symbols_json.json",
+        "pk_8588e97d52f846bc9fdd0e06cedd2d59"
+        ]
     
   
     
@@ -9,14 +14,14 @@ $(()=>{
     // .done(function(response){
     //     console.log(response)
     // })
-    $.get("https://cloud.iexapis.com/stable/stock/aapl/quote/?token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
-    .done(function(response){
-        console.log(response)
-    })
-    $.get("https://cloud.iexapis.com/stable/stock/aapl/company/?token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
-    .done(function(response){
-        console.log(response)
-    })
+    // $.get("https://cloud.iexapis.com/stable/stock/aapl/quote/?token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
+    // .done(function(response){
+    //     console.log(response)
+    // })
+    // $.get("https://cloud.iexapis.com/stable/stock/aapl/company/?token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
+    // .done(function(response){
+    //     console.log(response)
+    // })
 
 function createCompanyData(compArr){
    
@@ -54,13 +59,10 @@ function createCompanyData(compArr){
     
     let ul = document.getElementById("nameList");
     
-  
-    
     for (let company of companies) {
       
-      
       if (patt.test(company.name.toUpperCase()) && input.value.length > 0) {
-         $("#nameList").append(`<li id="${company.symbol}">Company Name: ${company.name}<br> Symbol: ${company.symbol}</li>`)
+         $("#nameList").append(`<li id="${company.symbol}">${company.name} (${company.symbol})</li>`)
         console.log(company)
       } 
     }

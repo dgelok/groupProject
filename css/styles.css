@@ -30,9 +30,19 @@ img{
     height:auto;
 }
 
+ul{
+    list-style: none;
+
+}
+
 #line{
     width:auto;
     height:auto;
+}
+
+li:hover{
+    background-color: black;
+    color:white;
 }
 
 
