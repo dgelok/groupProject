@@ -16,7 +16,7 @@
 
       <div class="container-fluid">
 
-        <div class="row sticky-top"">
+        <div class="row sticky-top">
             <div class="col">
                 <nav class="navbar navbar-expand-lg navbar-info bg-light">
                     <a class="navbar-brand" href="#">Green Chip</a>
@@ -35,7 +35,7 @@
           
                       </ul>
                       <form class="form-inline my-2 my-lg-0">
-                        <button class="btn btn-outline-dark my-2 ml-auto mr-auto my-sm-0" type="submit">Log Out</button>
+                        <button type="button" data-target="#areyousure" data-toggle="modal" class="btn btn-outline-dark my-2 ml-auto mr-auto my-sm-0">Log Out</button>
                       </form>
                     </div>
                   </nav>
@@ -132,6 +132,27 @@
               </div>
 
           </footer>
+
+          <!--modal-->
+          <div class="modal fade" id="areyousure" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalCenterTitle">Are you sure you want to log out?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  There's still money to be made.
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Nevermind</button>
+                  <button type="button" class="btn btn-primary">I'm sure.</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
       </div> <!--end of container fluid-->
       
