@@ -141,9 +141,11 @@ let tsla = new holding("Tesla","tsla",4)
 let fb = new holding("Facebook","FB",5)
 
 class user{
-    constructor(cash, holdings){
+    constructor(cash, holdings, userName){
+        this.userName = userName
         this.cash = cash
         this.holdings = holdings
+        this.netWorthHistory = []
     }
 }
 
