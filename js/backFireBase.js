@@ -32,7 +32,7 @@ $(()=>{
             }
             else {
                 console.log('user logged out')
-                window.location.href = "./index.html"
+                // window.location.href = "./index.html"
             }
         })
 })
