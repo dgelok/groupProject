@@ -76,9 +76,8 @@ $(()=>{
             .then(function() {
                 auth.signInWithEmailAndPassword(id, password)
                     .then((cred)=>{
-                        console.log(cred)
-                    
-                    // window.location.href = "./dashboard.html"
+                        // console.log(cred)
+                        window.location.href = "./dashboard.html"
                 })
             })
         })
