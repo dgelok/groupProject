@@ -56,11 +56,13 @@ $(()=>{
                 auth.createUserWithEmailAndPassword(userID, userPassword)
                 .then(cred => {
                     console.log(cred.user)
-
+                }).catch(function(e) {
+                    // console.log(e.message)
+                    $('#modalerror')[0].innerHTML = e.message
                 })
             }
             else {
-                console.log("Passwords do not match")
+                $('#modalerror')[0].innerHTML = "Passwords do not match"
             }
     
         })
@@ -83,6 +85,9 @@ $(()=>{
                     .then((cred)=>{
                         // console.log(cred)
                         window.location.href = "./dashboard.html"
+                }).catch(function(e) {
+                    // console.log(e.message)
+                    $('#error')[0].innerHTML = e.message
                 })
             })
         })

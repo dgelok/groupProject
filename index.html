@@ -50,6 +50,7 @@
               <input type="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
               <label for="inputPassword" class="sr-only">Password</label>
               <input type="password" id="inputPassword" class="form-control mt-1" placeholder="Password" required>
+              <div id="error" class="text-danger"></div>
               <div class="checkbox mb-3 mt-3">
                 <label for="checkbox">
                   <input type="checkbox" value="remember-me">
@@ -87,12 +88,13 @@
                   <div class="form-group">
                     <label for="password" class="col-form-label d-flex justify-content-start">Confirm Password</label>
                     <input type="password" class="form-control" id="passwordConfirm"></input>
+                    <div id="modalerror" class="text-danger"></div>
                   </div>
                 </form>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" id="registerSubmit">Create Account</button>
+                <button type="button" class="btn btn-primary" id="registerSubmit">Create Account</button>
               </div>
             </div>
           </div>
