@@ -1,5 +1,6 @@
 /* main styles page  */
 
+
 /*making the image responsive*/
 img{
     max-width: 100%;
@@ -89,7 +90,7 @@ body{
     margin-left: 0px;
     margin-right: 0px;
     font-family: 'Varela Round', sans-serif;
-    background-color: white;
+    /* background-color: white; */
 }
 
 .navbar-toggler{
@@ -108,12 +109,25 @@ body{
 #parallax-image2{
     background-image: url("/images/parallax.jpg");
     background-repeat: no-repeat;
-    height:600px;
+    height:400px;
     background-attachment: fixed;
     background-position-x: -1900px;
     background-position-y:100px;
 }
+#parallax-image3{
+    background-image: url("/images/shellSE.jpg");
+    background-size: cover;
+    height:400px;
+    background-attachment: fixed;
+    background-position-y:-300px;
+}
 
+#parallax-image4{
+    background-image: url("/images/shellSE2.jpg");
+    background-size: cover;
+    height:400px;
+    background-attachment: fixed;
+}
 
 #indexFooter{
     font-size: 60px;
