@@ -5,19 +5,6 @@ $(()=>{
     
     var companies = []
 
-    
-    // $.get("https://cloud.iexapis.com/stable/stock/aapl/batch?types=quote,news,chart&range=1m&last=10&token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
-    // .done(function(response){
-    //     console.log(response)
-    // })
-    // $.get("https://cloud.iexapis.com/stable/stock/aapl/quote/?token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
-    // .done(function(response){
-    //     console.log(response)
-    // })
-    // $.get("https://cloud.iexapis.com/stable/stock/aapl/company/?token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
-    // .done(function(response){
-    //     console.log(response)
-    // })
 
 function createCompanyData(compArr){
    
@@ -65,7 +52,6 @@ function createCompanyData(compArr){
     }
   });
 
- // FILLING MOCK PORTFOLIO CHART WITH DATA
 
 
 // HOLDING CLASS TO CREATE INSTANCES WHEN STOCK IS PURCHASED
@@ -97,13 +83,31 @@ class User{
         localStorage.setItem(`${this.userName}`, JSON.stringify(this))
     }
     createNewHolding(name, symbol, numShares){
-        let newHolding = new Holding(name,symbol,numShares)
-        this.holdings.push(newHolding)
-    }
-    buyStock(name, symbol, numShares, latestPrice){
-        if(this.cash >= numShares * latestPrice){
-            this.createNewHolding(name, symbol, numShares)
+        let found = false;
+        for(let comp of this.holdings){
+            if(symbol == comp.symbol){
+                comp.totalShares += numShares
+                found = true;
+            }
         }
+        if(found == false){
+            let newHolding = new Holding(name,symbol,numShares)
+            this.holdings.push(newHolding)
+        }
+       
+    }
+    async buyStock(name, symbol, numShares, latestPrice){
+        let stockPrice = await latestPrice(symbol)
+        console.log(typeof this.cash,typeof numShares, typeof stockPrice)
+        if(this.cash >= numShares * stockPrice){
+            console.log("Cash is enough to buy");
+            console.log(this.cash);
+            this.createNewHolding(name, symbol, numShares)
+            
+            this.cash = this.cash - (numShares * stockPrice)
+            console.log(this.cash);
+        }
+       
         
     }
     async getStockLatestPrice(stockSymbol){
@@ -135,7 +139,7 @@ class User{
         <td>Cash</td>
         <td></td>
         <td></td>
-        <td>$${this.cash}</td>
+        <td>$${this.cash.toFixed(2)}</td>
         </tr>
         `)
        let totalPortfolioValue = this.cash;
@@ -160,11 +164,7 @@ class User{
             <td>$${(Number(currentPrice) * comp.totalShares).toFixed(2)}</td>
           </tr>
             `)
-            
-           
-            
-            // console.log(json);
-           
+ 
         }
        
        
@@ -183,18 +183,8 @@ function createNewUser(userName){
         return newUser;
         
     }else{
-        console.log(localStorage.getItem(userName))
-        let parsedUserObj = JSON.parse(localStorage.getItem(userName))
-        console.log(parsedUserObj);
-        let userCash = parsedUserObj.cash
-        let user = parsedUserObj.userName
-        let userCurrentNetWorth = parsedUserObj.currentNetWorth
-        let currentUser = new User(user,userCash,userCurrentNetWorth)
-        
-        currentUser.getNetWorth();
-        currentUser.getData()  
-        return currentUser;
-        //return getUser(userName);
+       
+        return getUser(userName);
 
     }
     
@@ -205,7 +195,7 @@ function getUser(userName){
     console.log(localStorage.getItem(userName))
     let parsedUserObj = JSON.parse(localStorage.getItem(userName))
     console.log(parsedUserObj);
-    let userCash = parsedUserObj.cash
+    let userCash = Number(parsedUserObj.cash)
     let user = parsedUserObj.userName
     let userCurrentNetWorth = parsedUserObj.currentNetWorth
     let userCurrentHoldings = parsedUserObj.holdings
@@ -216,18 +206,11 @@ function getUser(userName){
 
 let currentUser = createNewUser(localStorage.currentUser);
 
-//let currentUser = createNewUser("John");
-// currentUser.createNewHolding("Apple","AAPL", 3)
 
 // currentUser.createNewHolding("Microsoft","MSFT", 6)
-// currentUser.saveUser()
-//currentUser.createNewHolding("Tesla","TSLA", 10)
-//currentUser.clearChart()
-currentUser.getData()
+// //currentUser.saveUser()
+// currentUser.getData()
 
-// currentUser.createNewHolding("Microsoft","MSFT", 6)
-// currentUser.saveUser()
-$("#currentUserCont").html(`${currentUser.userName}`)
 console.log(currentUser.userName);
 
 
@@ -235,7 +218,25 @@ console.log(currentUser.userName);
     currentUser.getData();
  })
 
+ currentUser.buyStock("Microsoft","MSFT", 5, currentUser.getStockLatestPrice)
+ //currentUser.saveUser()
+ currentUser.getData()
 //  currentUser.getStockLatestPrice("MSFT")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //   $("#nameList").click(function(e){
 //       console.log(e.target.id)
 //       let stockSymbol = e.target.id
@@ -315,13 +316,13 @@ console.log(currentUser.userName);
 
 
 
-let currentUser = createNewUser("Bill");
-currentUser.createNewHolding("Apple","AAPL", 7)
-currentUser.createNewHolding("Microsoft","MSFT", 4)
-currentUser.createNewHolding("Tesla","TSLA", 60)
-currentUser.getData()
+// let currentUser = createNewUser("Bill");
+// currentUser.createNewHolding("Apple","AAPL", 7)
+// currentUser.createNewHolding("Microsoft","MSFT", 4)
+// currentUser.createNewHolding("Tesla","TSLA", 60)
+// currentUser.getData()
 
-console.log(currentUser);
+// console.log(currentUser);
 
 
 })
