@@ -24,7 +24,7 @@ $(()=>{
 
         const auth = firebase.auth()
         const db = firebase.firestore()
-    
+        
     
         // listen for authentication status changes
         auth.onAuthStateChanged(user => {
@@ -56,7 +56,7 @@ $(()=>{
                 auth.createUserWithEmailAndPassword(userID, userPassword)
                 .then(cred => {
                     // console.log(cred.user)
-                    $('#exampleModal').modal('toggle')
+                    // $('#exampleModal').modal('toggle')
                 }).catch(function(e) {
                     // console.log(e.message)
                     $('#modalerror')[0].innerHTML = e.message

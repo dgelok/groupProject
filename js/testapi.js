@@ -1,4 +1,4 @@
-//import APIurls from "./config.js"
+// import APIurls from "./apikeys2.js"
 $(()=>{
     
     var companies = []
@@ -216,7 +216,7 @@ class User{
             <td>$${(Number(currentPrice) * comp.totalShares).toFixed(2)}</td>
           </tr>
             `)
-            console.log(json);
+            // console.log(json);
            
         }
        
@@ -232,7 +232,7 @@ class User{
 function createNewUser(userName){
     let newUser = new User(userName,10000,10000)
     if(localStorage.getItem(userName) == null){
-        localStorage.setItem(`${newUser.userName}`, JSON.stringify(dan))
+        localStorage.setItem(`${newUser.userName}`, JSON.stringify(newUser))
         return newUser;
         
     }else{
@@ -250,11 +250,15 @@ function createNewUser(userName){
     }
     
 }
-let currentUser = createNewUser("Dan");
-// currentUser.createNewHolding("Apple","AAPL", 3)
+
+let currentUser = createNewUser("Bill");
+currentUser.createNewHolding("Apple","AAPL", 7)
 currentUser.createNewHolding("Microsoft","MSFT", 4)
-currentUser.createNewHolding("Tesla","TSLA", 6)
+currentUser.createNewHolding("Tesla","TSLA", 60)
 currentUser.getData()
+
 console.log(currentUser);
 
 })
+
+
