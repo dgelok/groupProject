@@ -1,7 +1,14 @@
+
 import {APIurls} from "./apikeys.js"
+
 $(()=>{
     
-    var companies = [] 
+    var companies = []
+    var APIurls = [
+        "https://pkgstore.datahub.io/core/nyse-other-listings/nyse-listed_json/data/e8ad01974d4110e790b227dc1541b193/nyse-listed_json.json",
+        "https://pkgstore.datahub.io/core/nasdaq-listings/nasdaq-listed-symbols_json/data/5c10087ff8d283899b99f1c126361fa7/nasdaq-listed-symbols_json.json",
+        "pk_8588e97d52f846bc9fdd0e06cedd2d59"
+        ]
     
 
 function createCompanyData(compArr){
@@ -39,15 +46,13 @@ function createCompanyData(compArr){
     let patt = new RegExp(`^${input.value.toUpperCase()}`);
     
     let ul = document.getElementById("nameList");
-    
-  
-    
+    let count = 0;
     for (let company of companies) {
-      
-      
-      if (patt.test(company.name.toUpperCase()) && input.value.length > 0) {
-         $("#nameList").append(`<li id="${company.symbol}">Company Name: ${company.name}<br> Symbol: ${company.symbol}</li>`)
+
+      if (patt.test(company.name.toUpperCase()) && input.value.length > 0 && count<=10) {
+         $("#nameList").append(`<li id="${company.symbol}">${company.name} (${company.symbol})</li>`)
         console.log(company)
+        count++;
       } 
     }
   });
@@ -65,6 +70,7 @@ class Holding {
         }
     
 }
+
 
 
 
@@ -126,14 +132,17 @@ class User{
             <td>$${(Number(currentPrice) * comp.totalShares).toFixed(2)}</td>
           </tr>
             `)
-            console.log(json);
+            // console.log(json);
            
         }
        
        
     }
 
+ 
 }
+  
+  
 
 // CREATING NEW MOCK USER DATA
 function createNewUser(userName){
@@ -148,6 +157,7 @@ function createNewUser(userName){
     }
     
 }
+
 
 function getUser(userName){
     console.log(localStorage.getItem(userName))
@@ -252,4 +262,15 @@ console.log(currentUser.userName);
 
 
 
+// let currentUser = createNewUser("Bill");
+// currentUser.createNewHolding("Apple","AAPL", 7)
+// currentUser.createNewHolding("Microsoft","MSFT", 4)
+// currentUser.createNewHolding("Tesla","TSLA", 60)
+// currentUser.getData()
+
+// console.log(currentUser);
+
+
 })
+
+
