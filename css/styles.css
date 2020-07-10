@@ -45,6 +45,11 @@ li:hover{
     color:white;
 }
 
+#navLi:hover{
+    background-color: white;
+    color:blue;
+}
+
 .gcsmall{
     max-width: 100%;
     height: 60px;
