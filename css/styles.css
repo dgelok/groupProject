@@ -45,8 +45,10 @@ li:hover{
     color:white;
 }
 
-
-
+#navLi:hover{
+    background-color: white;
+    color:blue;
+}
 
 .gcsmall{
     max-width: 100%;
@@ -88,10 +90,6 @@ a{
     color:black;
 }
 
-a:hover{
-    color:text-info;
-}
-
 .richBlack{
     background-color: #0D1B2A;
 }
@@ -121,4 +119,9 @@ body{
 
 .z5{
     z-index: 5;
+}
+
+#parallax-image{
+    background-image: url("");
+    height:500px;
 }
