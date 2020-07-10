@@ -65,6 +65,15 @@ li:hover{
     background-color: #778DA9;
 }
 
+#signin:hover{
+    color:black;
+    border:black solid 1px;
+}
+#getStarted:hover{
+    color:black;
+    border:black solid 1px;
+}
+
 .header{
     color: black;
     font-size:20px;
