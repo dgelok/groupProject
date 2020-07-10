@@ -1,4 +1,5 @@
 import {APIurls} from "./apikeys.js"
+// import {userEmail} from "./backFireBase.js"
 
 $(()=>{
     
@@ -75,6 +76,7 @@ class Holding {
         this.symbol = symbol;
         this.totalShares = totalShares;
         }
+
     
 }
 
@@ -98,12 +100,23 @@ class User{
         let newHolding = new Holding(name,symbol,numShares)
         this.holdings.push(newHolding)
     }
+    buyStock(name, symbol, numShares, latestPrice){
+        if(this.cash >= numShares * latestPrice){
+            this.createNewHolding(name, symbol, numShares)
+        }
+        
+    }
+    async getStockLatestPrice(stockSymbol){
+        let response = await fetch(`https://cloud.iexapis.com/stable/stock/${stockSymbol}/quote/?token=${APIurls[2]}`)
+            let json = await response.json();
+            let currentPrice = json.latestPrice;
+            console.log(currentPrice);
+            return currentPrice;
+    }
     async getNetWorth(){
         let currentTotal = 0;
         for(let comp of this.holdings){
-            let response = await fetch(`https://cloud.iexapis.com/stable/stock/${comp.symbol}/quote/?token=${APIurls[2]}`)
-            let json = await response.json();
-            let currentPrice = json.latestPrice;
+            
             let currentShareTotal = currentPrice * comp.totalShares
             console.log(`Total current value for ${comp.name} with 
             ${comp.totalShares} is ${currentShareTotal}
@@ -113,17 +126,25 @@ class User{
         this.currentNetWorth.push(currentTotal + this.cash)
         console.log(this.currentNetWorth)
     }
+  
     async getData(){
-       let totalPortfolioValue = this.cash;
-       console.log(this.cash);
-        $("#cashTableData").html(`
+        //this.clearChart()
+        $("#tbody").html("")
+        $("#tbody").append(`
+        <tr id="cashTableData">
         <td>Cash</td>
         <td></td>
         <td></td>
         <td>$${this.cash}</td>
+        </tr>
         `)
+       let totalPortfolioValue = this.cash;
+       console.log(this.cash);
+       
+       
        
         for(let comp of this.holdings){
+            
             let response = await fetch(`https://cloud.iexapis.com/stable/stock/${comp.symbol}/quote/?token=${APIurls[2]}`)
             let json = await response.json();
             let currentPrice = json.latestPrice;
@@ -139,6 +160,9 @@ class User{
             <td>$${(Number(currentPrice) * comp.totalShares).toFixed(2)}</td>
           </tr>
             `)
+            
+           
+            
             // console.log(json);
            
         }
@@ -189,18 +213,29 @@ function getUser(userName){
     console.log(currentUser);
     return currentUser;
 }
-// let currentUser = createNewUser("Dan");
-// let currentUser = createNewUser("John");
+
+let currentUser = createNewUser(localStorage.currentUser);
+
+//let currentUser = createNewUser("John");
 // currentUser.createNewHolding("Apple","AAPL", 3)
-// currentUser.createNewHolding("Microsoft","MSFT", 6)
-// currentUser.createNewHolding("Tesla","TSLA", 10)
-// currentUser.getData()
+
 // currentUser.createNewHolding("Microsoft","MSFT", 6)
 // currentUser.saveUser()
-// $("#currentUserCont").html(`${currentUser.userName}`)
-// console.log(currentUser.userName);
+//currentUser.createNewHolding("Tesla","TSLA", 10)
+//currentUser.clearChart()
+currentUser.getData()
 
- 
+// currentUser.createNewHolding("Microsoft","MSFT", 6)
+// currentUser.saveUser()
+$("#currentUserCont").html(`${currentUser.userName}`)
+console.log(currentUser.userName);
+
+
+ $("#refreshButton").click(function(e){
+    currentUser.getData();
+ })
+
+//  currentUser.getStockLatestPrice("MSFT")
 //   $("#nameList").click(function(e){
 //       console.log(e.target.id)
 //       let stockSymbol = e.target.id
@@ -290,5 +325,3 @@ console.log(currentUser);
 
 
 })
-
-

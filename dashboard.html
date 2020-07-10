@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Rubik&family=Varela+Round&display=swap" rel="stylesheet">
     <script src="https://use.fontawesome.com/fd3bcad7e6.js"></script>
-    <script src="js/testapi.js" type="module"></script>
+   
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
@@ -39,6 +39,7 @@
         chart.draw(data, options);
       }
     </script>
+    
     <script type="module" src="./js/backFireBase.js"></script>
 
   </head>
@@ -101,10 +102,7 @@
                     </thead>
                     <!-- NEED API URL KEY ARRAY FROM SLACK TO USE API CALLS TO POPULATE DATA CHART AND GRAPHS! -->
                     <tbody id="tbody">
-                      <tr id="cashTableData">
-                        <td>Cash</td>
-          
-                    </tr>
+                      
                     </tbody>
                   </table>
               </div>
@@ -118,7 +116,7 @@
           <div class="row mt-2 ml-1">
             <div class="col-lg-2 col-sm-auto"></div>
             <div class="col d-flex justify-content-start">
-              <button class="btn btn-outline-dark btn-lg mr-2">Refresh Dash</button>
+              <button id="refreshButton" class="btn btn-outline-dark btn-lg mr-2">Refresh Data</button>
               <a href="checkout.html"><button class="btn btn-outline-success btn-lg  mr-2">Buy</button></a>
               <button class="btn btn-outline-primary btn-lg ">Sell</button>
             </div>
@@ -176,8 +174,10 @@
     <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
 
     <script type="module" src="js/script.js"></script>
-
+    <script src="js/testapi.js" type="module"></script>
     <script type="module" src="js/newsAPI.js"></script>
+
+    
 
   </body>
 </html>

@@ -1,7 +1,6 @@
 import {firebaseAPIkey, newsAPIkey, iexCloudAPIkey} from './apikeys.js'
 
 
-
 // Your web app's Firebase configuration
 var firebaseConfig = {
 apiKey: firebaseAPIkey,
@@ -27,7 +26,7 @@ $(()=>{
 
         auth.onAuthStateChanged(user => {
             if (user) {
-                console.log(`user logged in: ${user.email}`)
+                //localStorage.setItem("currentUser",user.email);
                 // console.log(user)
             }
             else {
