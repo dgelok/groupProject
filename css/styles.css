@@ -120,3 +120,8 @@ body{
 .z5{
     z-index: 5;
 }
+
+#parallax-image{
+    background-image: url("");
+    height:500px;
+}
