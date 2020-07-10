@@ -45,9 +45,6 @@ li:hover{
     color:white;
 }
 
-
-
-
 .gcsmall{
     max-width: 100%;
     height: 60px;
@@ -86,10 +83,6 @@ li:hover{
 
 a{
     color:black;
-}
-
-a:hover{
-    color:text-info;
 }
 
 .richBlack{

@@ -8,8 +8,6 @@ $(()=>{
         "pk_8588e97d52f846bc9fdd0e06cedd2d59"
         ]
     
-  
-    
     // $.get("https://cloud.iexapis.com/stable/stock/aapl/batch?types=quote,news,chart&range=1m&last=10&token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
     // .done(function(response){
     //     console.log(response)
@@ -228,7 +226,7 @@ class User{
   
   
 
-// CREATING NEW MOCK USER DATA
+//CREATING NEW MOCK USER DATA
 function createNewUser(userName){
     let newUser = new User(userName,10000,10000)
     if(localStorage.getItem(userName) == null){
@@ -244,14 +242,14 @@ function createNewUser(userName){
         let userCurrentNetWorth = parsedUserObj.currentNetWorth
         let currentUser = new User(user,userCash,userCurrentNetWorth)
         
-        //currentUser.getNetWorth();
-        //currentUser.getData()  
+        currentUser.getNetWorth();
+        currentUser.getData()  
         return currentUser;
     }
     
 }
 let currentUser = createNewUser("Dan");
-// currentUser.createNewHolding("Apple","AAPL", 3)
+currentUser.createNewHolding("Apple","AAPL", 3)
 currentUser.createNewHolding("Microsoft","MSFT", 4)
 currentUser.createNewHolding("Tesla","TSLA", 6)
 currentUser.getData()
