@@ -56,7 +56,7 @@ $(()=>{
                 auth.createUserWithEmailAndPassword(userID, userPassword)
                 .then(cred => {
                     // console.log(cred.user)
-                    // $('#exampleModal').modal('toggle')
+                    $('#exampleModal').modal('toggle')
                 }).catch(function(e) {
                     // console.log(e.message)
                     $('#modalerror')[0].innerHTML = e.message

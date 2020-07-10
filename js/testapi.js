@@ -1,14 +1,9 @@
-
 import {APIurls} from "./apikeys.js"
 
 $(()=>{
     
     var companies = []
-    var APIurls = [
-        "https://pkgstore.datahub.io/core/nyse-other-listings/nyse-listed_json/data/e8ad01974d4110e790b227dc1541b193/nyse-listed_json.json",
-        "https://pkgstore.datahub.io/core/nasdaq-listings/nasdaq-listed-symbols_json/data/5c10087ff8d283899b99f1c126361fa7/nasdaq-listed-symbols_json.json",
-        "pk_8588e97d52f846bc9fdd0e06cedd2d59"
-        ]
+
     
     // $.get("https://cloud.iexapis.com/stable/stock/aapl/batch?types=quote,news,chart&range=1m&last=10&token=pk_8588e97d52f846bc9fdd0e06cedd2d59")
     // .done(function(response){
@@ -101,7 +96,7 @@ class User{
     }
     createNewHolding(name, symbol, numShares){
         let newHolding = new Holding(name,symbol,numShares)
-       this.holdings.push(newHolding)
+        this.holdings.push(newHolding)
     }
     async getNetWorth(){
         let currentTotal = 0;
@@ -133,7 +128,7 @@ class User{
             let json = await response.json();
             let currentPrice = json.latestPrice;
             $('#totalPortfolioValue').html(`
-                Portfolio: $${(totalPortfolioValue += (currentPrice * comp.totalShares)).toFixed(2)}
+                $${(totalPortfolioValue += (currentPrice * comp.totalShares)).toFixed(2)}
             `)
             $("#tbody").append(`
             <tr>
@@ -176,7 +171,7 @@ function createNewUser(userName){
         currentUser.getData()  
         return currentUser;
         //return getUser(userName);
-      
+
     }
     
 }
@@ -194,16 +189,16 @@ function getUser(userName){
     console.log(currentUser);
     return currentUser;
 }
-//let currentUser = createNewUser("Dan");
-//let currentUser = createNewUser("John");
-//currentUser.createNewHolding("Apple","AAPL", 3)
-//currentUser.createNewHolding("Microsoft","MSFT", 6)
-//currentUser.createNewHolding("Tesla","TSLA", 10)
-//currentUser.getData()
-//currentUser.createNewHolding("Microsoft","MSFT", 6)
-//currentUser.saveUser()
-$("#currentUserCont").html(`${currentUser.userName}`)
-console.log(currentUser.userName);
+// let currentUser = createNewUser("Dan");
+// let currentUser = createNewUser("John");
+// currentUser.createNewHolding("Apple","AAPL", 3)
+// currentUser.createNewHolding("Microsoft","MSFT", 6)
+// currentUser.createNewHolding("Tesla","TSLA", 10)
+// currentUser.getData()
+// currentUser.createNewHolding("Microsoft","MSFT", 6)
+// currentUser.saveUser()
+// $("#currentUserCont").html(`${currentUser.userName}`)
+// console.log(currentUser.userName);
 
  
 //   $("#nameList").click(function(e){
@@ -285,13 +280,13 @@ console.log(currentUser.userName);
 
 
 
-// let currentUser = createNewUser("Bill");
-// currentUser.createNewHolding("Apple","AAPL", 7)
-// currentUser.createNewHolding("Microsoft","MSFT", 4)
-// currentUser.createNewHolding("Tesla","TSLA", 60)
-// currentUser.getData()
+let currentUser = createNewUser("Bill");
+currentUser.createNewHolding("Apple","AAPL", 7)
+currentUser.createNewHolding("Microsoft","MSFT", 4)
+currentUser.createNewHolding("Tesla","TSLA", 60)
+currentUser.getData()
 
-// console.log(currentUser);
+console.log(currentUser);
 
 
 })
