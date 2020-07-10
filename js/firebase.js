@@ -84,7 +84,8 @@ $(()=>{
             .then(function() {
                 auth.signInWithEmailAndPassword(id, password)
                     .then((cred)=>{
-                        // console.log(cred)
+                        localStorage.setItem("currentUser",id);
+                        console.log(cred)
                         window.location.href = "./dashboard.html"
                 }).catch(function(e) {
                     // console.log(e.message)

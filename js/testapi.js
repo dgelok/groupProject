@@ -1,14 +1,15 @@
 
 import {APIurls} from "./apikeys.js"
+// import {userEmail} from "./backFireBase.js"
 
 $(()=>{
     
     var companies = []
-    var APIurls = [
-        "https://pkgstore.datahub.io/core/nyse-other-listings/nyse-listed_json/data/e8ad01974d4110e790b227dc1541b193/nyse-listed_json.json",
-        "https://pkgstore.datahub.io/core/nasdaq-listings/nasdaq-listed-symbols_json/data/5c10087ff8d283899b99f1c126361fa7/nasdaq-listed-symbols_json.json",
-        "pk_8588e97d52f846bc9fdd0e06cedd2d59"
-        ]
+    // var APIurls = [
+    //     "https://pkgstore.datahub.io/core/nyse-other-listings/nyse-listed_json/data/e8ad01974d4110e790b227dc1541b193/nyse-listed_json.json",
+    //     "https://pkgstore.datahub.io/core/nasdaq-listings/nasdaq-listed-symbols_json/data/5c10087ff8d283899b99f1c126361fa7/nasdaq-listed-symbols_json.json",
+    //     "pk_8588e97d52f846bc9fdd0e06cedd2d59"
+    //     ]
     
 
 function createCompanyData(compArr){
@@ -106,17 +107,25 @@ class User{
         this.currentNetWorth.push(currentTotal + this.cash)
         console.log(this.currentNetWorth)
     }
+  
     async getData(){
-       let totalPortfolioValue = this.cash;
-       console.log(this.cash);
-        $("#cashTableData").html(`
+        //this.clearChart()
+        $("#tbody").html("")
+        $("#tbody").append(`
+        <tr id="cashTableData">
         <td>Cash</td>
         <td></td>
         <td></td>
         <td>$${this.cash}</td>
+        </tr>
         `)
+       let totalPortfolioValue = this.cash;
+       console.log(this.cash);
+       
+       
        
         for(let comp of this.holdings){
+            
             let response = await fetch(`https://cloud.iexapis.com/stable/stock/${comp.symbol}/quote/?token=${APIurls[2]}`)
             let json = await response.json();
             let currentPrice = json.latestPrice;
@@ -132,6 +141,9 @@ class User{
             <td>$${(Number(currentPrice) * comp.totalShares).toFixed(2)}</td>
           </tr>
             `)
+            
+           
+            
             // console.log(json);
            
         }
@@ -171,18 +183,25 @@ function getUser(userName){
     console.log(currentUser);
     return currentUser;
 }
-let currentUser = createNewUser("Dan");
+let currentUser = createNewUser(localStorage.currentUser);
+
 //let currentUser = createNewUser("John");
-//currentUser.createNewHolding("Apple","AAPL", 3)
-//currentUser.createNewHolding("Microsoft","MSFT", 6)
+// currentUser.createNewHolding("Apple","AAPL", 3)
+
+// currentUser.createNewHolding("Microsoft","MSFT", 6)
+// currentUser.saveUser()
 //currentUser.createNewHolding("Tesla","TSLA", 10)
+//currentUser.clearChart()
 currentUser.getData()
+
 //currentUser.createNewHolding("Microsoft","MSFT", 6)
 //currentUser.saveUser()
 $("#currentUserCont").html(`${currentUser.userName}`)
 console.log(currentUser.userName);
 
- 
+ $("#refreshButton").click(function(e){
+    currentUser.getData();
+ })
 //   $("#nameList").click(function(e){
 //       console.log(e.target.id)
 //       let stockSymbol = e.target.id
@@ -272,5 +291,3 @@ console.log(currentUser.userName);
 
 
 })
-
-
