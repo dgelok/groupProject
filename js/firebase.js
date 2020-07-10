@@ -1,7 +1,5 @@
 import {firebaseAPIkey, newsAPIkey, iexCloudAPIkey} from './apikeys.js'
 
- 
-
 // Your web app's Firebase configuration
 var firebaseConfig = {
 apiKey: firebaseAPIkey,
@@ -56,7 +54,7 @@ $(()=>{
                 auth.createUserWithEmailAndPassword(userID, userPassword)
                 .then(cred => {
                     // console.log(cred.user)
-                    // $('#exampleModal').modal('toggle')
+                    $('#exampleModal').modal('toggle')
                 }).catch(function(e) {
                     // console.log(e.message)
                     $('#modalerror')[0].innerHTML = e.message
