@@ -366,17 +366,17 @@ $("#checkoutBuyButton").click(function(e){
 
         
 
-//         // Calls setINterval function to update Latest Stock Price
-//         setInterval(() => {
-//             fetch(`https://cloud.iexapis.com/stable/stock/${json[1].symbol}/quote/?token=${APIurls[2]}`)
-//             .then(response => response.json())
-//             .then(json => {
-//                 console.log(json.latestPrice)
-//                 console.log(json.companyName)
-//                 $("#stockPrice").html(`Latest Stock Price: ${json.latestPrice}`) ;
-//             })
-//             }, 500000)
-//       }) 
+        // Calls setINterval function to update Latest Stock Price
+        setInterval(() => {
+            fetch(`https://cloud.iexapis.com/stable/stock/${json[1].symbol}/quote/?token=${APIurls[2]}`)
+            .then(response => response.json())
+            .then(json => {
+                console.log(json.latestPrice)
+                console.log(json.companyName)
+                $("#stockPrice").html(`Latest Stock Price: ${json.latestPrice}`) ;
+            })
+            }, 500000)
+
    
 //   })
 
