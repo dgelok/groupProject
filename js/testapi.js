@@ -78,6 +78,14 @@ class User{
         this.cash = cash;
         this.currentNetWorth = [currentNetWorth];
         this.holdings = holdings;
+        this.currentStockAwaitingPurchase = {};
+    }
+    addStockToPurchaseList(name, symbol){
+        this.currentStockAwaitingPurchase = {
+            name : name,
+            symbol : symbol,
+        
+        }
     }
     saveUser(){
         localStorage.setItem(`${this.userName}`, JSON.stringify(this))
@@ -87,11 +95,13 @@ class User{
         for(let comp of this.holdings){
             if(symbol == comp.symbol){
                 comp.totalShares += numShares
+                console.log(comp.totalShares);
                 found = true;
             }
         }
         if(found == false){
             let newHolding = new Holding(name,symbol,numShares)
+            console.log(newHolding.totalShares);
             this.holdings.push(newHolding)
         }
        
@@ -107,12 +117,18 @@ class User{
             this.cash = this.cash - (numShares * stockPrice)
             console.log(this.cash);
         }
-       
+        this.saveUser();
         
+    }
+    async getStockData(stockSymbol){
+        let response = await fetch(`https://cloud.iexapis.com/stable/stock/${stockSymbol}/quote/?token=${APIurls[2]}`)
+        let json = await response.json();
+        return json;
     }
     async getStockLatestPrice(stockSymbol){
         let response = await fetch(`https://cloud.iexapis.com/stable/stock/${stockSymbol}/quote/?token=${APIurls[2]}`)
             let json = await response.json();
+            console.log(json)
             let currentPrice = json.latestPrice;
             console.log(currentPrice);
             return currentPrice;
@@ -209,21 +225,66 @@ let currentUser = createNewUser(localStorage.currentUser);
 
 // currentUser.createNewHolding("Microsoft","MSFT", 6)
 // //currentUser.saveUser()
-// currentUser.getData()
+currentUser.getData()
 
-console.log(currentUser.userName);
+console.log(currentUser);
 
 
  $("#refreshButton").click(function(e){
     currentUser.getData();
  })
+//currentUser.buyStock("Microsoft","MSFT", 5, currentUser.getStockLatestPrice)
+//  //currentUser.saveUser()
+//  currentUser.getData()
+currentUser.getStockLatestPrice("MSFT")
 
- currentUser.buyStock("Microsoft","MSFT", 5, currentUser.getStockLatestPrice)
- //currentUser.saveUser()
- currentUser.getData()
-//  currentUser.getStockLatestPrice("MSFT")
+$("#nameList").click(function(e){
+    console.log(e.target.id);
+    (async () => {
+    let stockData = await currentUser.getStockData(e.target.id);
+    console.log(stockData);
+    let currentShares = 0;
+    $("#companyNameAndSymbolCheckoutTable").html(`${stockData.companyName}(${stockData.symbol})`)
+    $("#currentSharePrice").html(`${stockData.latestPrice}`)
+    for(let comp of currentUser.holdings){
+        if(comp.symbol == stockData.symbol){
+            currentShares = comp.totalShares;
+        }
+    }
+    $("#userCurrentSharesCheckoutTable").html(`${currentShares}`)
+    $("#exampleModalCenterTitle2").html(`Purchase shares of ${stockData.companyName} <br> for $${stockData.latestPrice} a share`)
+        currentUser.addStockToPurchaseList(stockData.companyName,stockData.symbol)
+    })()
+    
 
+})
 
+$("#checkoutBuyButton").click(function(e){
+    let stockName = currentUser.currentStockAwaitingPurchase.name;
+    let stockSymbol = currentUser.currentStockAwaitingPurchase.symbol;
+    
+    let sharesToBuy = $("#numSharesToPurchaseField").val();
+    $("#buyConfirmationMessage").html(`You purchased ${sharesToBuy} shares of ${stockName}!`)
+    console.log(sharesToBuy);
+   currentUser.buyStock(stockName, stockSymbol, sharesToBuy, currentUser.getStockLatestPrice)
+})
+
+// $('#exampleModalCenter2').on('shown.bs.modal', function (e) {
+    
+//         let stockData = awacurrentUser.getStockData(e.target.id);
+//         console.log(stockData);
+//         $("#exampleModalCenterTitle2").html(`Purchase shares of ${stockData.companyName} at $${stockData.latestPrice} a share`)
+  
+//   })
+
+// $("#buySharesFinalButton").click(function(e){
+//     console.log(e);
+//         // let stockData = await currentUser.getStockData(e.target.id);
+//         // console.log(stockData);
+       
+//         $("#exampleModalCenterTitle").html(`Purchase shares of  a share`)
+  
+// })
 
 
 
