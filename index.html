@@ -17,33 +17,44 @@
     
   <body class="text-center">
 
-      <div class="container-fluid">
+    <div class="container-fluid">
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" target="_blank" href="https://github.com/dgelok/groupProject">Green Chip</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <i class="fa fa-angle-down" aria-hidden="true"></i>
-          </button>
-        
-          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-              <li id="navLi" class="nav-item">
-                <a class="nav-link" href="#">About Us<span class="sr-only">(current)</span></a>
-              </li>
-              <li id="navLi" class="nav-item">
-                <a class="nav-link" href="#">FAQ</a>
-              </li>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+        <a class="navbar-brand" target="_blank" href="https://github.com/dgelok/groupProject">Green Chip</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fa fa-angle-down" aria-hidden="true"></i>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li id="navLi" class="nav-item">
+              <a class="nav-link" href="#">About Us<span class="sr-only">(current)</span></a>
+            </li>
+            <li id="navLi" class="nav-item">
+              <a class="nav-link" href="#">FAQ</a>
+            </li>
 
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-              <button type="button" data-target="#exampleModal" data-toggle="modal" class="btn btn-outline-success my-2 ml-auto mr-auto my-sm-0">Sign Up</button>
-            </form>
+          </ul>
+          <form class="form-inline my-2 my-lg-0">
+            <button type="button" data-target="#exampleModal" data-toggle="modal" class="btn btn-outline-success my-2 ml-auto mr-auto my-sm-0">Sign Up</button>
+          </form>
+        </div>
+      </nav>
+      <!--end nav bar and start first parallax image-->
+
+
+        <div id="parallax-image">
+          <div class="row h-100">
+            <div class="col-md-12 align-self-center">
+              
+            </div>
           </div>
-        </nav>
+        </div>
 
-        <div class="row">
-          <div class="col-lg col-md-2"></div>
-          <div class="col-lg col-md-8" style="padding-left:30px;">
+
+        <div class="row  bdazz">
+          <div id="transparent" class="col-lg col-md-2"></div>
+          <div class="col-lg col-md-8 mt-5 mb-5" style="padding-left:30px;background-color: white;border:solid black 1px;">
             <form class="form-signin">
               <!--logo-->
               <img src="images/greenchip.png" class="mb-5 mt-5" alt="greenchip" width="200" height="200">
@@ -65,9 +76,9 @@
 
             </form>
           </div>
-          <div class="col-lg col-md-2"></div>
+          <div id="transparent" class="col-lg col-md-2"></div>
         </div>
-        <!-- modal-->
+        <!--LOG OUT modal-->
         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -101,7 +112,63 @@
             </div>
           </div>
         </div>
+        <!--end log out modal start parallax image 2-->
 
+        <div id="parallax-image2">
+          <div class="row h-100 z10">
+            <div class="col-md-12 align-self-center">
+              
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row bdazz ">
+          <div class="col-3"></div>
+          <div class="col-6 pt-5 pb-5 rubik" style="font-size:22px;text-align: left;color:white;">
+            Green Chip is a simplified stock market playground that
+            uses real-time market data to manipulate the market without using
+            your hard-earned money. We'll give you an allowance to start 
+            then it's up
+            to you how want to manage your money from there. Test theories
+            and investment strategies in real-time with Green Chip.
+
+          </div>
+          <div class="col-3"></div>
+        </div>
+
+
+        <!--shell stock exchange room pic will go here-->
+        <div id="parallax-image3" class="w-100">
+          <div class="row h-100">
+            <div class="col-md-12 align-self-center">
+              
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="row">
+          <div id="indexFooter" class="col rubik bdazz" style="color:white;">
+            Real Data Is Real Fun
+          </div>
+        </div>
+
+        <!--Get started button that triggers the sign up modal-->  
+        <div class="row d-flex justify-content-center bdazz" style="color:white;">
+          <button id="getStarted" type="button" data-target="#exampleModal" data-toggle="modal" class="btn btn-success btn-lg mt-3 mb-3">Get Started</button>
+        </div>
+      
+
+
+        <div id="parallax-image4" class="w-100">
+          <div class="row h-100">
+            <div class="col-md-12 align-self-center">
+              
+            </div>
+          </div>
+        </div>
 
       </div> <!--end of container fluid-->
 
@@ -119,7 +186,6 @@
     <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-analytics.js"></script>
     <script type="module" src='js/firebase.js'></script>
     <script type="module" src="js/script.js"></script>
-
     <script type="module" src="js/newsAPI.js"></script>
 
 </body>

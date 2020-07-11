@@ -1,17 +1,5 @@
 /* main styles page  */
 
-/*rich black: 0D1B2A
-oxford blue: 1b263b
-bdazzled: 415a77
-shadow blue: 778da9
-platinum: e0e1dd*/
-
-/*possible fonts
-oswald
-nunito
-rubik
-quicksand
-*/
 
 /*making the image responsive*/
 img{
@@ -77,6 +65,15 @@ li:hover{
     background-color: #778DA9;
 }
 
+#signin:hover{
+    color:black;
+    border:black solid 1px;
+}
+#getStarted:hover{
+    color:black;
+    border:black solid 1px;
+}
+
 .header{
     color: black;
     font-size:20px;
@@ -88,10 +85,6 @@ li:hover{
 
 a{
     color:black;
-}
-
-.richBlack{
-    background-color: #0D1B2A;
 }
 
 .varela{
@@ -106,22 +99,45 @@ body{
     margin-left: 0px;
     margin-right: 0px;
     font-family: 'Varela Round', sans-serif;
-    background-color: white;
+    /* background-color: white; */
 }
 
 .navbar-toggler{
     border:2px solid;
 }
 
-.z10{
-    z-index: 10;
-}
-
-.z5{
-    z-index: 5;
-}
-
 #parallax-image{
-    background-image: url("");
-    height:500px;
+    background-image: url("/images/parallax.jpg");
+    background-repeat: no-repeat;
+    height:600px;
+    background-attachment: fixed;
+    background-position-x: -1000px;
+    background-position-y: -1200px;
+}
+
+#parallax-image2{
+    background-image: url("/images/parallax.jpg");
+    background-repeat: no-repeat;
+    height:400px;
+    background-attachment: fixed;
+    background-position-x: -1900px;
+    background-position-y:100px;
+}
+#parallax-image3{
+    background-image: url("/images/shellSE.jpg");
+    background-size: cover;
+    height:400px;
+    background-attachment: fixed;
+    background-position-y:-300px;
+}
+
+#parallax-image4{
+    background-image: url("/images/shellSE2.jpg");
+    background-size: cover;
+    height:400px;
+    background-attachment: fixed;
+}
+
+#indexFooter{
+    font-size: 60px;
 }
