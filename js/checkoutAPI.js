@@ -2,11 +2,11 @@ import {APIurls, firebaseAPIkey} from "./apikeys.js"
 // import {userEmail} from "./backFireBase.js"
 
 
-// firebase.initializeApp({
-//         apiKey: firebaseAPIkey,
-//         authDomain: "stock-market-playground.firebaseapp.com",
-//         projectId: "stock-market-playground"
-//     });
+firebase.initializeApp({
+        apiKey: firebaseAPIkey,
+        authDomain: "stock-market-playground.firebaseapp.com",
+        projectId: "stock-market-playground"
+    });
 
 const db = firebase.firestore();
 // console.log(db)
