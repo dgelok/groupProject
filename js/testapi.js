@@ -162,26 +162,48 @@ class User{
        console.log(this.cash);
        
        
-       
-        for(let comp of this.holdings){
+       Promise.all(this.holdings.map( comp => {
+           return fetch(`https://cloud.iexapis.com/stable/stock/${comp.symbol}/quote/?token=${APIurls[2]}`).then(resp => resp.json())
+       })).then(results => {
+        //    console.log(results);
+        results.forEach((comp, index)=>{
             
-            let response = await fetch(`https://cloud.iexapis.com/stable/stock/${comp.symbol}/quote/?token=${APIurls[2]}`)
-            let json = await response.json();
-            let currentPrice = json.latestPrice;
-            $('#totalPortfolioValue').html(`
-                $${(totalPortfolioValue += (currentPrice * comp.totalShares)).toFixed(2)}
+            let currentCompInHoldings = this.holdings[index];
+            console.log(typeof comp.latestPrice, typeof currentCompInHoldings.totalShares);
+                $('#totalPortfolioValue').html(`
+                $${(totalPortfolioValue += (comp.latestPrice * currentCompInHoldings.totalShares)).toFixed(2)}
             `)
             $("#tbody").append(`
             <tr>
             
-            <td>${comp.name} (${comp.symbol})</td>
-            <td>${comp.totalShares}</td>
-            <td>$${Number(currentPrice).toFixed(2)}</td>
-            <td>$${(Number(currentPrice) * comp.totalShares).toFixed(2)}</td>
+            <td>${currentCompInHoldings.name} (${currentCompInHoldings.symbol})</td>
+            <td>${Number(currentCompInHoldings.totalShares)}</td>
+            <td>$${Number(comp.latestPrice).toFixed(2)}</td>
+            <td>$${(Number(comp.latestPrice) * Number(currentCompInHoldings.totalShares)).toFixed(2)}</td>
           </tr>
             `)
+           
+        } )
+       })
+        // for(let comp of this.holdings){
+            
+        //     let response = await fetch(`https://cloud.iexapis.com/stable/stock/${comp.symbol}/quote/?token=${APIurls[2]}`)
+        //     let json = await response.json();
+        //     let currentPrice = json.latestPrice;
+        //     $('#totalPortfolioValue').html(`
+        //         $${(totalPortfolioValue += (currentPrice * comp.totalShares)).toFixed(2)}
+        //     `)
+        //     $("#tbody").append(`
+        //     <tr>
+            
+        //     <td>${comp.name} (${comp.symbol})</td>
+        //     <td>${comp.totalShares}</td>
+        //     <td>$${Number(currentPrice).toFixed(2)}</td>
+        //     <td>$${(Number(currentPrice) * comp.totalShares).toFixed(2)}</td>
+        //   </tr>
+        //     `)
  
-        }
+        // }
        
        
     }
@@ -263,7 +285,7 @@ $("#checkoutBuyButton").click(function(e){
     let stockName = currentUser.currentStockAwaitingPurchase.name;
     let stockSymbol = currentUser.currentStockAwaitingPurchase.symbol;
     
-    let sharesToBuy = $("#numSharesToPurchaseField").val();
+    let sharesToBuy = Number($("#numSharesToPurchaseField").val());
     $("#buyConfirmationMessage").html(`You purchased ${sharesToBuy} shares of ${stockName}!`)
     console.log(sharesToBuy);
    currentUser.buyStock(stockName, stockSymbol, sharesToBuy, currentUser.getStockLatestPrice)
