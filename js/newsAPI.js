@@ -14,6 +14,7 @@ $(()=>{
         $.get(url)
         .done(function (response) {
             // console.log(response.articles)
+            let $tbody = $('#tbody')
             for (let i = 0; i < 3; i++) {
                 console.log(response.articles[i].title)
             }
