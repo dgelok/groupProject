@@ -1,56 +1,7 @@
 import {APIurls} from "./apikeys.js"
-// import {userEmail} from "./backFireBase.js"
-
 $(()=>{
     
-    var companies = []
-
-
-function createCompanyData(compArr){
-   
-    for(let company of compArr[0]){
-        companies.push({
-            symbol : company["ACT Symbol"],
-            name : company["Company Name"]
-        })
-    }
-    for(let company of compArr[1]){
-        companies.push({
-            symbol : company["Symbol"],
-            name : company["Company Name"]
-        })
-    }
-
-    console.log(companies);
-  }
-
-  Promise.all([fetch(APIurls[0]),fetch(APIurls[1])])
-  .then(results => {
-    return Promise.all(results.map(response => response.json()))
-      
-    })
-  .then(json => {
-      createCompanyData(json)    
-  }) 
-
-
-  $('#searchField').keyup(function () {
-    $("#nameList").html("");
-    $("#companyDataContainer").html("");
-    let input = document.getElementById('searchField');
-    let patt = new RegExp(`^${input.value.toUpperCase()}`);
     
-    let ul = document.getElementById("nameList");
-    let count = 0;
-    for (let company of companies) {
-
-      if (patt.test(company.name.toUpperCase()) && input.value.length > 0 && count<=10) {
-         $("#nameList").append(`<li id="${company.symbol}">${company.name} (${company.symbol})</li>`)
-        console.log(company)
-        count++;
-      } 
-    }
-  });
 
 
 
@@ -79,6 +30,7 @@ class User{
         this.currentNetWorth = [currentNetWorth];
         this.holdings = holdings;
         this.currentStockAwaitingPurchase = {};
+        
     }
     addStockToPurchaseList(name, symbol){
         this.currentStockAwaitingPurchase = {
@@ -133,18 +85,34 @@ class User{
             console.log(currentPrice);
             return currentPrice;
     }
-    async getNetWorth(){
-        let currentTotal = 0;
-        for(let comp of this.holdings){
+    async getPortfolioData(){
+        
+        return Promise.all(this.holdings.map( comp => {
+            return fetch(`https://cloud.iexapis.com/stable/stock/${comp.symbol}/quote/?token=${APIurls[2]}`).then(resp => resp.json())
+        })).then(results => {
+            let total = 0;
+            let companyArray = []
+         results.forEach((comp, index)=>{
+             
+             let currentCompInHoldings = this.holdings[index];
+             let latestPrice = parseFloat(comp.latestPrice); 
+             let totalSharesOfComp =  parseInt(currentCompInHoldings.totalShares);  
+             total += (latestPrice * totalSharesOfComp);
+             companyArray.push({
+                 name : currentCompInHoldings.name,
+                 totalSharesValue : total
+                 
+             })
+             console.log(total);
+             
             
-            let currentShareTotal = currentPrice * comp.totalShares
-            console.log(`Total current value for ${comp.name} with 
-            ${comp.totalShares} is ${currentShareTotal}
-            `)
-            currentTotal += currentShareTotal
-        }
-        this.currentNetWorth.push(currentTotal + this.cash)
-        console.log(this.currentNetWorth)
+         } )
+         return {
+            totalPortfolioValue : total + this.cash,
+            companys : companyArray
+         }
+        })
+        
     }
   
     async getData(){
@@ -171,7 +139,7 @@ class User{
             let currentCompInHoldings = this.holdings[index];
             console.log(typeof comp.latestPrice, typeof currentCompInHoldings.totalShares);
                 $('#totalPortfolioValue').html(`
-                $${(totalPortfolioValue += (comp.latestPrice * currentCompInHoldings.totalShares)).toFixed(2)}
+                Portfolio Value: $${(totalPortfolioValue += (comp.latestPrice * currentCompInHoldings.totalShares)).toFixed(2)}
             `)
             $("#tbody").append(`
             <tr>
@@ -185,27 +153,7 @@ class User{
            
         } )
        })
-        // for(let comp of this.holdings){
-            
-        //     let response = await fetch(`https://cloud.iexapis.com/stable/stock/${comp.symbol}/quote/?token=${APIurls[2]}`)
-        //     let json = await response.json();
-        //     let currentPrice = json.latestPrice;
-        //     $('#totalPortfolioValue').html(`
-        //         $${(totalPortfolioValue += (currentPrice * comp.totalShares)).toFixed(2)}
-        //     `)
-        //     $("#tbody").append(`
-        //     <tr>
-            
-        //     <td>${comp.name} (${comp.symbol})</td>
-        //     <td>${comp.totalShares}</td>
-        //     <td>$${Number(currentPrice).toFixed(2)}</td>
-        //     <td>$${(Number(currentPrice) * comp.totalShares).toFixed(2)}</td>
-        //   </tr>
-        //     `)
- 
-        // }
-       
-       
+
     }
 
  
@@ -315,6 +263,89 @@ $("#goHome").click(function(e){
     window.location.href = "dashboard.html";
 })
 
+
+
+// Create line graph
+async function createLineGraph(){
+    let currentPortfolioData = await currentUser.getPortfolioData();
+    console.log(currentPortfolioData);
+    let totalPortfolioValue = currentPortfolioData.totalPortfolioValue;
+    let compNames = currentPortfolioData.companys.map(comp => comp.name)
+    let compPercentages = currentPortfolioData.companys.map(comp => (comp.totalSharesValue / totalPortfolioValue * 100).toFixed(2))
+    let colors = currentPortfolioData.companys.map(comp => comp.color)
+    let moreColors = ["#FFEC21","#378AFF","#FFA32F","#F54F52","#93F03B","#9552EA"]
+    const ctx = document.getElementById('myChart').getContext('2d');
+    const ctx2 = document.getElementById('myPie').getContext('2d');
+ const chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+        labels: ['Day 1', 'Today'],
+        datasets: [{
+            label: 'Portfolio Value',
+            backgroundColor: 'blue',
+            borderColor: 'blue',
+            data: [10000, totalPortfolioValue],
+            fill: false
+        }]
+    },
+
+    // Configuration options go here
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    // Include a dollar sign in the ticks
+                    callback: function(value, index, values) {
+                        return '$' + value;
+                    }
+                }
+            }]
+        },
+        title: {
+            display: true,
+            text: 'Change in Portfolio Value'
+        }
+    }
+});
+
+const pie = new Chart(ctx2, {
+    // The type of chart we want to create
+    type: 'pie',
+
+    // The data for our dataset
+    data: {
+        labels: [...compNames,"Cash"],
+        datasets: [{
+            label: 'Portfolio Value',
+            backgroundColor: moreColors,
+            data: [...compPercentages, (currentUser.cash/totalPortfolioValue *100).toFixed(2)],
+            fill: false
+        }]
+    },
+
+    // Configuration options go here
+    options: {
+        title: {
+            display: true,
+            text: 'Percentages of Total Portfolio'
+        },
+        legend: {
+            display: true,
+            labels: {
+                
+            }
+        },
+        
+    }
+});
+
+
+
+}
+createLineGraph()
 
 
 })
