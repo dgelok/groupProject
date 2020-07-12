@@ -100,7 +100,7 @@ class User{
              total += (latestPrice * totalSharesOfComp);
              companyArray.push({
                  name : currentCompInHoldings.name,
-                 totalSharesValue : total
+                 totalSharesValue : (latestPrice * totalSharesOfComp)
                  
              })
              console.log(total);
@@ -270,8 +270,9 @@ async function createLineGraph(){
     let currentPortfolioData = await currentUser.getPortfolioData();
     console.log(currentPortfolioData);
     let totalPortfolioValue = currentPortfolioData.totalPortfolioValue;
+    console.log(totalPortfolioValue);
     let compNames = currentPortfolioData.companys.map(comp => comp.name)
-    let compPercentages = currentPortfolioData.companys.map(comp => (comp.totalSharesValue / totalPortfolioValue * 100).toFixed(2))
+    let compPercentages = currentPortfolioData.companys.map(comp => ((comp.totalSharesValue / totalPortfolioValue) * 100).toFixed(2))
     let colors = currentPortfolioData.companys.map(comp => comp.color)
     let moreColors = ["#FFEC21","#378AFF","#FFA32F","#F54F52","#93F03B","#9552EA"]
     const ctx = document.getElementById('myChart').getContext('2d');
@@ -321,7 +322,7 @@ const pie = new Chart(ctx2, {
         datasets: [{
             label: 'Portfolio Value',
             backgroundColor: moreColors,
-            data: [...compPercentages, (currentUser.cash/totalPortfolioValue *100).toFixed(2)],
+            data: [...compPercentages, ((currentUser.cash/totalPortfolioValue) *100).toFixed(2)],
             fill: false
         }]
     },
