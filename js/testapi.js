@@ -410,6 +410,4 @@ $("#goHome").click(function(e){
     window.location.href = "dashboard.html";
 })
 
-
-
 })
