@@ -11,8 +11,6 @@ firebase.initializeApp({
 const db = firebase.firestore();
 // console.log(db)
 
-
-
 $(()=>{
     
     var companies = []
@@ -61,7 +59,6 @@ function createCompanyData(compArr){
       } 
     }
   });
-
 
 
 // HOLDING CLASS TO CREATE INSTANCES WHEN STOCK IS PURCHASED
@@ -255,6 +252,7 @@ $("#nameList").click(function(e){
     let stockData = await currentUser.getStockData(e.target.id);
     console.log(stockData);
     let currentShares = 0;
+    $('#checkoutTable').show();
     $("#companyNameAndSymbolCheckoutTable").html(`${stockData.companyName}(${stockData.symbol})`)
     $("#currentSharePrice").html(`${stockData.latestPrice}`)
     for(let comp of currentUser.holdings){

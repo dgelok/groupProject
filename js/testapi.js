@@ -15,11 +15,6 @@ const db = firebase.firestore();
 
 
 $(()=>{
-    
-  
-
-
-   
 
 // HOLDING CLASS TO CREATE INSTANCES WHEN STOCK IS PURCHASED
 class Holding {
@@ -238,7 +233,6 @@ $("#nameList").click(function(e){
     $("#currentCashCheckoutField").html(`$${currentUser.cash.toFixed(2)}`)
     $("#totalCashRemaining").html(`$${currentUser.cash.toFixed(2)}`)
     })()
-    
 
 })
 
