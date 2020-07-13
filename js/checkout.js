@@ -16,7 +16,6 @@ const db = firebase.firestore();
 
 $(()=>{
     
-
     var companies = []
 
 
@@ -64,8 +63,6 @@ function createCompanyData(compArr){
       } 
     }
   });
-
-
 
 // HOLDING CLASS TO CREATE INSTANCES WHEN STOCK IS PURCHASED
 class Holding {
