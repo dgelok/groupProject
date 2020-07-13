@@ -1,3 +1,4 @@
+
 import {APIurls, firebaseAPIkey} from "./apikeys.js"
 // import {userEmail} from "./backFireBase.js"
 
@@ -15,6 +16,7 @@ const db = firebase.firestore();
 
 $(()=>{
     
+
     var companies = []
 
 
@@ -32,6 +34,7 @@ function createCompanyData(compArr){
             name : company["Company Name"]
         })
     }
+
   }
 
   Promise.all([fetch(APIurls[0]),fetch(APIurls[1])])
@@ -279,5 +282,6 @@ $("#checkoutBuyButton").click(function(e){
     console.log(sharesToBuy);
    currentUser.buyStock(stockName, stockSymbol, sharesToBuy, currentUser.getStockLatestPrice)
 })
+
 
 })
