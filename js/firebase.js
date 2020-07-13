@@ -1,5 +1,15 @@
 import {firebaseAPIkey, newsAPIkey, iexCloudAPIkey} from './apikeys.js'
 
+class User{
+    constructor(userName, cash,currentNetWorth, holdings = []){
+        this.userName = userName;
+        this.cash = cash;
+        this.currentNetWorth = currentNetWorth;
+        this.holdings = holdings;
+        this.currentStockAwaitingPurchase = {};
+    }
+}
+
 // Your web app's Firebase configuration
 var firebaseConfig = {
 apiKey: firebaseAPIkey,
@@ -55,7 +65,16 @@ $(()=>{
                 .then(cred => {
                     // console.log(cred.user)
                     $('#exampleModal').modal('toggle')
-                }).catch(function(e) {
+                })
+                .then(function () {
+                    let newUser = new User(userName,10000,10000)
+                    localStorage.setItem(`${newUser.userName}`, JSON.stringify(newUser))
+                    db.collection("users").doc(`${newUser.userName}`).set({
+                        info: JSON.stringify(newUser)
+                    })
+                    console.log(`No user found. Created new one: ${JSON.stringify(newUser)}`)
+                })
+                .catch(function(e) {
                     // console.log(e.message)
                     $('#modalerror')[0].innerHTML = e.message
                 })
@@ -91,7 +110,7 @@ $(()=>{
                     .then((cred)=>{
                         localStorage.setItem("currentUser",id);
                         console.log(cred)
-                        // window.location.href = "./dashboard.html"
+                        window.location.href = "./dashboard.html"
                 }).catch(function(e) {
                     // console.log(e.message)
                     $('#error')[0].innerHTML = e.message
