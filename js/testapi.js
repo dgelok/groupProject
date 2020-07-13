@@ -1,6 +1,7 @@
 import {APIurls} from "./apikeys.js"
 $(()=>{
     
+
 // HOLDING CLASS TO CREATE INSTANCES WHEN STOCK IS PURCHASED
 class Holding {
     
@@ -9,7 +10,6 @@ class Holding {
         this.symbol = symbol;
         this.totalShares = totalShares;
         }
-
     
 }
 
@@ -136,7 +136,7 @@ class User{
           </tr>
             `)
            
-        } )
+        })
        })
 
     }
@@ -206,6 +206,111 @@ $("#nameList").click(function(e){
 })
 
 $("#checkoutBuyButton").click(function(e){
+    let stockName = currentUser.currentStockAwaitingPurchase.name;
+    let stockSymbol = currentUser.currentStockAwaitingPurchase.symbol;
+    
+    let sharesToBuy = Number($("#numSharesToPurchaseField").val());
+    $("#buyConfirmationMessage").html(`You purchased ${sharesToBuy} shares of ${stockName}!`)
+    console.log(sharesToBuy);
+   currentUser.buyStock(stockName, stockSymbol, sharesToBuy, currentUser.getStockLatestPrice)
+})
+
+// $('#exampleModalCenter2').on('shown.bs.modal', function (e) {
+    
+//         let stockData = awacurrentUser.getStockData(e.target.id);
+//         console.log(stockData);
+//         $("#exampleModalCenterTitle2").html(`Purchase shares of ${stockData.companyName} at $${stockData.latestPrice} a share`)
+  
+//   })
+
+// $("#buySharesFinalButton").click(function(e){
+//     console.log(e);
+//         // let stockData = await currentUser.getStockData(e.target.id);
+//         // console.log(stockData);
+       
+//         $("#exampleModalCenterTitle").html(`Purchase shares of  a share`)
+  
+// })
+
+
+
+
+
+
+
+
+
+
+
+
+
+//   $("#nameList").click(function(e){
+//       console.log(e.target.id)
+//       let stockSymbol = e.target.id
+//       Promise.all([fetch(`https://cloud.iexapis.com/stable/stock/${stockSymbol}/company/?token=${APIurls[2]}`),
+//       fetch(`https://cloud.iexapis.com/stable/stock/${stockSymbol}/quote/?token=${APIurls[2]}`)])
+//       .then(results => {
+//         return Promise.all(results.map(response => response.json()))
+          
+//         })
+//       .then(json => {
+//           console.log(json[0])
+//           console.log(json[1])
+//              console.log(json[0].companyName)
+//              console.log(json)
+//              console.log(json[1].latestPrice)
+//             $("#companyDataContainer").append(
+//             `<button id="buyButton">Buy Stock</button>
+//             <h3>${json[0].companyName}</h3>
+//             <span id="stockPrice">Latest Stock Price: ${json[1].latestPrice}</span>
+//             <br><br>    
+//             <h6>Company Description</h6>
+//             <p>${json[0].description}</p>
+            
+//             `)
+//             $("#buyButton").click(function(){
+            
+//                 $("#companyDataContainer").html(`
+//                 Comapny: ${json[0].companyName} Price Per Share: ${json[1].latestPrice}
+//                 How many shares would you like to purchase
+//                   <input type="text" id="numSharesTextField"><button id="buyShares">Buy Shares</button> 
+//                 `)
+//                 $("#buyShares").click(function(){
+//                     let numPurchasedShares = Number($("#numSharesTextField").val());
+//                     currentUser.createNewHolding(json[0].companyName,stockSymbol, numPurchasedShares)
+//                     currentUser.saveUser();
+//                     //currentUser.getData();
+                    
+//                 })
+
+//             })
+            
+
+
+
+        
+
+        // Calls setINterval function to update Latest Stock Price
+        setInterval(() => {
+            fetch(`https://cloud.iexapis.com/stable/stock/${json[1].symbol}/quote/?token=${APIurls[2]}`)
+            .then(response => response.json())
+            .then(json => {
+                console.log(json.latestPrice)
+                console.log(json.companyName)
+                $("#stockPrice").html(`Latest Stock Price: ${json.latestPrice}`) ;
+            })
+            }, 500000)
+
+   
+//   })
+
+//   function getCurrentStockPrice(symbol){
+//     fetch(`https://cloud.iexapis.com/stable/stock/${symbol}/quote/?token=${APIurls[2]}`)
+//     .then(response => response.json())
+//     .then(json => {
+//         console.log(json.latestPrice)
+//         return json.latestPrice;
+        
     let notAbleToBuy = $("#overPurchaseWarningMessage").is(":visible");
     if(notAbleToBuy){
         return
@@ -219,7 +324,6 @@ $("#checkoutBuyButton").click(function(e){
        currentUser.buyStock(stockName, stockSymbol, sharesToBuy, currentUser.getStockLatestPrice)
     }
 
-})
 
 $("#numSharesToPurchaseField").keyup(function(e){
     
