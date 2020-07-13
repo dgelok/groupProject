@@ -5,7 +5,6 @@ $(()=>{
     
     var companies = []
 
-
 function createCompanyData(compArr){
    
     for(let company of compArr[0]){
@@ -52,8 +51,6 @@ function createCompanyData(compArr){
     }
   });
 
-
-
 // HOLDING CLASS TO CREATE INSTANCES WHEN STOCK IS PURCHASED
 class Holding {
     
@@ -62,14 +59,8 @@ class Holding {
         this.symbol = symbol;
         this.totalShares = totalShares;
         }
-
     
 }
-
-
-
-
-
 
 // USER CLASS FOR CREATING NEW USERS
 class User{
@@ -183,7 +174,7 @@ class User{
           </tr>
             `)
            
-        } )
+        })
        })
         // for(let comp of this.holdings){
             
@@ -243,29 +234,22 @@ function getUser(userName){
 }
 
 let currentUser = createNewUser(localStorage.currentUser);
-
-
-// currentUser.createNewHolding("Microsoft","MSFT", 6)
-// //currentUser.saveUser()
 currentUser.getData()
-
 console.log(currentUser);
 
-
- $("#refreshButton").click(function(e){
+$("#refreshButton").click(function(e){
     currentUser.getData();
  })
-//currentUser.buyStock("Microsoft","MSFT", 5, currentUser.getStockLatestPrice)
-//  //currentUser.saveUser()
-//  currentUser.getData()
-currentUser.getStockLatestPrice("MSFT")
 
+
+ // Checkout Function
 $("#nameList").click(function(e){
     console.log(e.target.id);
     (async () => {
     let stockData = await currentUser.getStockData(e.target.id);
     console.log(stockData);
     let currentShares = 0;
+    $("#checkoutTable").show();
     $("#companyNameAndSymbolCheckoutTable").html(`${stockData.companyName}(${stockData.symbol})`)
     $("#currentSharePrice").html(`${stockData.latestPrice}`)
     for(let comp of currentUser.holdings){
@@ -274,8 +258,10 @@ $("#nameList").click(function(e){
         }
     }
     $("#userCurrentSharesCheckoutTable").html(`${currentShares}`)
-    $("#exampleModalCenterTitle2").html(`Purchase shares of ${stockData.companyName} <br> for $${stockData.latestPrice} a share`)
-        currentUser.addStockToPurchaseList(stockData.companyName,stockData.symbol)
+    $("#exampleModalCenterTitle2").html(`Purchase shares of ${stockData.companyName} <br> for $<span>${stockData.latestPrice}</span> a share`)
+    currentUser.addStockToPurchaseList(stockData.companyName,stockData.symbol)
+    $("#currentCashCheckoutField").html(`$${currentUser.cash.toFixed(2)}`)
+    $("#totalCashRemaining").html(`$${currentUser.cash.toFixed(2)}`)
     })()
     
 
@@ -380,8 +366,6 @@ $("#checkoutBuyButton").click(function(e){
    
 //   })
 
- 
-
 //   function getCurrentStockPrice(symbol){
 //     fetch(`https://cloud.iexapis.com/stable/stock/${symbol}/quote/?token=${APIurls[2]}`)
 //     .then(response => response.json())
@@ -389,23 +373,43 @@ $("#checkoutBuyButton").click(function(e){
 //         console.log(json.latestPrice)
 //         return json.latestPrice;
         
+    let notAbleToBuy = $("#overPurchaseWarningMessage").is(":visible");
+    if(notAbleToBuy){
+        return
+    }else{
+        let stockName = currentUser.currentStockAwaitingPurchase.name;
+        let stockSymbol = currentUser.currentStockAwaitingPurchase.symbol;
         
-//     })
-//   }
+        let sharesToBuy = Number($("#numSharesToPurchaseField").val());
+        $("#successPurchaseMessage").html(`You purchased ${sharesToBuy} shares of ${stockName}!`)
+        $("#successPurchaseMessage").show();
+        console.log(sharesToBuy);
+       currentUser.buyStock(stockName, stockSymbol, sharesToBuy, currentUser.getStockLatestPrice)
+    }
 
 
+$("#numSharesToPurchaseField").keyup(function(e){
+    
+    let numSharesToPurchase = Number($("#numSharesToPurchaseField").val()).toFixed(0);
+    let latestPrice = Number($("#exampleModalCenterTitle2 span").html()).toFixed(2);
+    let total = Number(numSharesToPurchase) * Number(latestPrice);
+    let cashRemaining = Number(currentUser.cash - total).toFixed(2);
+    if(cashRemaining <= 0){
+        $("#overPurchaseWarningMessage").show();
+    }else{
+        $("#overPurchaseWarningMessage").hide();
+    }
+    
+    $("#totalSharesWantingToPurchase").html(`${numSharesToPurchase} X ${latestPrice}`);
+    $("#totalSharePurchasePrice").html(`$${total.toFixed(2)}`)
+    $("#totalCashRemaining").html(`$${cashRemaining}`)
 
+})
 
+$("#goHome").click(function(e){
+    window.location.href = "dashboard.html";
+})
 
-
-
-// let currentUser = createNewUser("Bill");
-// currentUser.createNewHolding("Apple","AAPL", 7)
-// currentUser.createNewHolding("Microsoft","MSFT", 4)
-// currentUser.createNewHolding("Tesla","TSLA", 60)
-// currentUser.getData()
-
-// console.log(currentUser);
 
 
 })
