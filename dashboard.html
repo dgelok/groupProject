@@ -14,31 +14,8 @@
     <script src="https://use.fontawesome.com/fd3bcad7e6.js"></script>
    
 
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+   
 
-      function drawChart() {
-
-        var data = google.visualization.arrayToDataTable([
-          ['Companies ', 'Amount invested'],
-          ['Apple',      1],
-          ['Facebook',      1],
-          ['S&P 500',  1],
-          ['TSLA', 1],
-          ['TWTR',    1]
-        ]);
-
-        var options = {
-          title: 'My Investments'
-        };
-
-        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-
-        chart.draw(data, options);
-      }
-    </script>
     
     <script type="module" src="./js/backFireBase.js"></script>
 
@@ -127,12 +104,12 @@
               <!-- <div class="col-lg-2 col-sm-auto pr-0 pl-0"></div> -->
 
               <div class="col-lg-5 d-flex d-flex justify-content-center mt-3 pr-0 pl-0">
-                <img id="line" src="images/linegraph.png" alt="earnings">
+                <canvas id="myChart"></canvas>
               </div>
 
               <div class="col-sm-0 col-md-0 col-lg-2"></div>
 
-              <div id="piechart" class="col-lg-5 pl-0 pr-0 mt-3 mr-0 d-flex justify-content-center">
+              <canvas id="myPie"></canvas>
                 
               </div>
 
@@ -176,6 +153,7 @@
     <script type="module" src="js/script.js"></script>
     <script src="js/testapi.js" type="module"></script>
     <script type="module" src="js/newsAPI.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
     
 
