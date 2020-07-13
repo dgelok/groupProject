@@ -10,7 +10,6 @@ img{
 #piechart{
     width: 100%;
     height: auto;
-    
 }
 
 #piechart > * > first-child{
@@ -69,6 +68,7 @@ li:hover{
     color:black;
     border:black solid 1px;
 }
+
 #getStarted:hover{
     color:black;
     border:black solid 1px;
