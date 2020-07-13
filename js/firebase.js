@@ -80,11 +80,18 @@ $(()=>{
             var password = $('#inputPassword')[0].value
             auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
             .then(function() {
+                db.collection("users").doc(id).get()
+                .then(function (doc) {
+                    let parsedUserObj = doc.data().info
+                    console.log(`Got something from DB! ${parsedUserObj}`)
+                    localStorage.setItem(`${id}`, parsedUserObj)
+                    console.log(`Here's the localStorage stuff: ${localStorage.getItem(id)}`)
+                })
                 auth.signInWithEmailAndPassword(id, password)
                     .then((cred)=>{
                         localStorage.setItem("currentUser",id);
                         console.log(cred)
-                        window.location.href = "./dashboard.html"
+                        // window.location.href = "./dashboard.html"
                 }).catch(function(e) {
                     // console.log(e.message)
                     $('#error')[0].innerHTML = e.message
