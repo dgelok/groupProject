@@ -1,10 +1,6 @@
 import {APIurls} from "./apikeys.js"
 $(()=>{
     
-    
-
-
-
 // HOLDING CLASS TO CREATE INSTANCES WHEN STOCK IS PURCHASED
 class Holding {
     
@@ -16,11 +12,6 @@ class Holding {
 
     
 }
-
-
-
-
-
 
 // USER CLASS FOR CREATING NEW USERS
 class User{
@@ -103,10 +94,7 @@ class User{
                  totalSharesValue : (latestPrice * totalSharesOfComp)
                  
              })
-             console.log(total);
-             
-            
-         } )
+        } )
          return {
             totalPortfolioValue : total + this.cash,
             companys : companyArray
@@ -116,7 +104,6 @@ class User{
     }
   
     async getData(){
-        //this.clearChart()
         $("#tbody").html("")
         $("#tbody").append(`
         <tr id="cashTableData">
@@ -127,8 +114,6 @@ class User{
         </tr>
         `)
        let totalPortfolioValue = this.cash;
-       console.log(this.cash);
-       
        
        Promise.all(this.holdings.map( comp => {
            return fetch(`https://cloud.iexapis.com/stable/stock/${comp.symbol}/quote/?token=${APIurls[2]}`).then(resp => resp.json())
@@ -137,7 +122,7 @@ class User{
         results.forEach((comp, index)=>{
             
             let currentCompInHoldings = this.holdings[index];
-            console.log(typeof comp.latestPrice, typeof currentCompInHoldings.totalShares);
+            
                 $('#totalPortfolioValue').html(`
                 Portfolio Value: $${(totalPortfolioValue += (comp.latestPrice * currentCompInHoldings.totalShares)).toFixed(2)}
             `)
@@ -178,21 +163,19 @@ function createNewUser(userName){
 
 
 function getUser(userName){
-    console.log(localStorage.getItem(userName))
     let parsedUserObj = JSON.parse(localStorage.getItem(userName))
-    console.log(parsedUserObj);
     let userCash = Number(parsedUserObj.cash)
     let user = parsedUserObj.userName
     let userCurrentNetWorth = parsedUserObj.currentNetWorth
     let userCurrentHoldings = parsedUserObj.holdings
     let currentUser = new User(user,userCash,userCurrentNetWorth,userCurrentHoldings)
-    console.log(currentUser);
+
     return currentUser;
 }
 
 let currentUser = createNewUser(localStorage.currentUser);
 currentUser.getData()
-console.log(currentUser);
+
 
 $("#refreshButton").click(function(e){
     currentUser.getData();
@@ -201,10 +184,8 @@ $("#refreshButton").click(function(e){
 
  // Checkout Function
 $("#nameList").click(function(e){
-    console.log(e.target.id);
     (async () => {
     let stockData = await currentUser.getStockData(e.target.id);
-    console.log(stockData);
     let currentShares = 0;
     $("#checkoutTable").show();
     $("#companyNameAndSymbolCheckoutTable").html(`${stockData.companyName}(${stockData.symbol})`)
@@ -235,7 +216,6 @@ $("#checkoutBuyButton").click(function(e){
         let sharesToBuy = Number($("#numSharesToPurchaseField").val());
         $("#successPurchaseMessage").html(`You purchased ${sharesToBuy} shares of ${stockName}!`)
         $("#successPurchaseMessage").show();
-        console.log(sharesToBuy);
        currentUser.buyStock(stockName, stockSymbol, sharesToBuy, currentUser.getStockLatestPrice)
     }
 
@@ -268,13 +248,10 @@ $("#goHome").click(function(e){
 // Create line graph
 async function createLineGraph(){
     let currentPortfolioData = await currentUser.getPortfolioData();
-    console.log(currentPortfolioData);
     let totalPortfolioValue = currentPortfolioData.totalPortfolioValue;
-    console.log(totalPortfolioValue);
     let compNames = currentPortfolioData.companys.map(comp => comp.name)
     let compPercentages = currentPortfolioData.companys.map(comp => ((comp.totalSharesValue / totalPortfolioValue) * 100).toFixed(2))
-    let colors = currentPortfolioData.companys.map(comp => comp.color)
-    let moreColors = ["#FFEC21","#378AFF","#FFA32F","#F54F52","#93F03B","#9552EA"]
+    let moreColors = ["#FFEC21","#378AFF","#FFA32F","#F54F52","#93F03B","#9552EA","#5DADEC","#FF007C"]
     const ctx = document.getElementById('myChart').getContext('2d');
     const ctx2 = document.getElementById('myPie').getContext('2d');
  const chart = new Chart(ctx, {
