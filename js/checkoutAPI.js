@@ -1,13 +1,12 @@
-
 import {APIurls, firebaseAPIkey} from "./apikeys.js"
 // import {userEmail} from "./backFireBase.js"
 
 
-// firebase.initializeApp({
-//         apiKey: firebaseAPIkey,
-//         authDomain: "stock-market-playground.firebaseapp.com",
-//         projectId: "stock-market-playground"
-//     });
+firebase.initializeApp({
+        apiKey: firebaseAPIkey,
+        authDomain: "stock-market-playground.firebaseapp.com",
+        projectId: "stock-market-playground"
+    });
 
 const db = firebase.firestore();
 // console.log(db)
@@ -16,10 +15,54 @@ const db = firebase.firestore();
 
 $(()=>{
     
-  
+    var companies = []
 
 
+function createCompanyData(compArr){
    
+    for(let company of compArr[0]){
+        companies.push({
+            symbol : company["ACT Symbol"],
+            name : company["Company Name"]
+        })
+    }
+    for(let company of compArr[1]){
+        companies.push({
+            symbol : company["Symbol"],
+            name : company["Company Name"]
+        })
+    }
+  }
+
+  Promise.all([fetch(APIurls[0]),fetch(APIurls[1])])
+  .then(results => {
+    return Promise.all(results.map(response => response.json()))
+      
+    })
+  .then(json => {
+      createCompanyData(json)    
+  }) 
+
+
+  $('#searchField').keyup(function () {
+    $("#nameList").html("");
+    $("#companyDataContainer").html("");
+    let input = document.getElementById('searchField');
+    let patt = new RegExp(`^${input.value.toUpperCase()}`);
+    
+    let ul = document.getElementById("nameList");
+    let count = 0;
+    for (let company of companies) {
+
+      if (patt.test(company.name.toUpperCase()) && input.value.length > 0 && count<=10) {
+         $("#nameList").append(`<li id="${company.symbol}">${company.name} (${company.symbol})</li>`)
+        console.log(company)
+        count++;
+      } 
+    }
+  });
+
+
 
 // HOLDING CLASS TO CREATE INSTANCES WHEN STOCK IS PURCHASED
 class Holding {
@@ -29,7 +72,6 @@ class Holding {
         this.symbol = symbol;
         this.totalShares = totalShares;
         }
-
 }
 
 
@@ -41,7 +83,6 @@ class User{
         this.currentNetWorth = currentNetWorth;
         this.holdings = holdings;
         this.currentStockAwaitingPurchase = {};
-        
     }
     addStockToPurchaseList(name, symbol){
         this.currentStockAwaitingPurchase = {
@@ -98,34 +139,22 @@ class User{
             console.log(currentPrice);
             return currentPrice;
     }
-    async getPortfolioData(){
-        
-        return Promise.all(this.holdings.map( comp => {
-            return fetch(`https://cloud.iexapis.com/stable/stock/${comp.symbol}/quote/?token=${APIurls[2]}`).then(resp => resp.json())
-        })).then(results => {
-            let total = 0;
-            let companyArray = []
-         results.forEach((comp, index)=>{
-             
-             let currentCompInHoldings = this.holdings[index];
-             let latestPrice = parseFloat(comp.latestPrice); 
-             let totalSharesOfComp =  parseInt(currentCompInHoldings.totalShares);  
-             total += (latestPrice * totalSharesOfComp);
-             companyArray.push({
-                 name : currentCompInHoldings.name,
-                 totalSharesValue : (latestPrice * totalSharesOfComp)
-                 
-             })
-        } )
-         return {
-            totalPortfolioValue : total + this.cash,
-            companys : companyArray
-         }
-        })
-        
+    async getNetWorth(){
+        let currentTotal = 0;
+        for(let comp of this.holdings){
+            
+            let currentShareTotal = currentPrice * comp.totalShares
+            console.log(`Total current value for ${comp.name} with 
+            ${comp.totalShares} is ${currentShareTotal}
+            `)
+            currentTotal += currentShareTotal
+        }
+        this.currentNetWorth.push(currentTotal + this.cash)
+        console.log(this.currentNetWorth)
     }
   
     async getData(){
+        //this.clearChart()
         $("#tbody").html("")
         $("#tbody").append(`
         <tr id="cashTableData">
@@ -135,7 +164,6 @@ class User{
         <td>$${this.cash.toFixed(2)}</td>
         </tr>
         `)
-
         let totalPortfolioValue = this.cash;
     //    console.log(this.cash);
         currentUser.saveUser()
@@ -148,9 +176,9 @@ class User{
         results.forEach((comp, index)=>{
             
             let currentCompInHoldings = this.holdings[index];
-            
+            console.log(typeof comp.latestPrice, typeof currentCompInHoldings.totalShares);
                 $('#totalPortfolioValue').html(`
-                Portfolio Value: $${(totalPortfolioValue += (comp.latestPrice * currentCompInHoldings.totalShares)).toFixed(2)}
+                $${(totalPortfolioValue += (comp.latestPrice * currentCompInHoldings.totalShares)).toFixed(2)}
             `)
             $("#tbody").append(`
             <tr>
@@ -162,9 +190,8 @@ class User{
           </tr>
             `)
            
-        })
+        } )
        })
-
     }
 }
 
@@ -187,44 +214,47 @@ function createNewUser(userName){
 
 
 function getUser(userName){
-
     console.log(`Found info in local storage: ${localStorage.getItem(userName)}`)
     let parsedUserObj = JSON.parse(localStorage.getItem(userName))
     // console.log(parsedUserObj);
-
     let userCash = Number(parsedUserObj.cash)
     let user = parsedUserObj.userName
     let userCurrentNetWorth = parsedUserObj.currentNetWorth
     let userCurrentHoldings = parsedUserObj.holdings
     let currentUser = new User(user,userCash,userCurrentNetWorth,userCurrentHoldings)
-
     // console.log(currentUser);
     db.collection("users").doc(userName).get()
     .then(function (doc) {
         parsedUserObj = doc.data().info
         console.log(`Got something from DB! ${parsedUserObj}`)
     })
-
     return currentUser;
 }
 
 let currentUser = createNewUser(localStorage.currentUser);
+
+
+// currentUser.createNewHolding("Microsoft","MSFT", 6)
+// //currentUser.saveUser()
 currentUser.getData()
 
+// console.log(currentUser);
 
 
-$("#refreshButton").click(function(e){
+ $("#refreshButton").click(function(e){
     currentUser.getData();
  })
+//currentUser.buyStock("Microsoft","MSFT", 5, currentUser.getStockLatestPrice)
+//  //currentUser.saveUser()
+//  currentUser.getData()
+// currentUser.getStockLatestPrice("MSFT")
 
-
-
- // Checkout Function
 $("#nameList").click(function(e){
+    console.log(e.target.id);
     (async () => {
     let stockData = await currentUser.getStockData(e.target.id);
+    console.log(stockData);
     let currentShares = 0;
-    $("#checkoutTable").show();
     $("#companyNameAndSymbolCheckoutTable").html(`${stockData.companyName}(${stockData.symbol})`)
     $("#currentSharePrice").html(`${stockData.latestPrice}`)
     for(let comp of currentUser.holdings){
@@ -233,10 +263,8 @@ $("#nameList").click(function(e){
         }
     }
     $("#userCurrentSharesCheckoutTable").html(`${currentShares}`)
-    $("#exampleModalCenterTitle2").html(`Purchase shares of ${stockData.companyName} <br> for $<span>${stockData.latestPrice}</span> a share`)
-    currentUser.addStockToPurchaseList(stockData.companyName,stockData.symbol)
-    $("#currentCashCheckoutField").html(`$${currentUser.cash.toFixed(2)}`)
-    $("#totalCashRemaining").html(`$${currentUser.cash.toFixed(2)}`)
+    $("#exampleModalCenterTitle2").html(`Purchase shares of ${stockData.companyName} <br> for $${stockData.latestPrice} a share`)
+        currentUser.addStockToPurchaseList(stockData.companyName,stockData.symbol)
     })()
     
 
@@ -251,142 +279,5 @@ $("#checkoutBuyButton").click(function(e){
     console.log(sharesToBuy);
    currentUser.buyStock(stockName, stockSymbol, sharesToBuy, currentUser.getStockLatestPrice)
 })
-
-
-
-        // Calls setINterval function to update Latest Stock Price
-        setInterval(() => {
-            fetch(`https://cloud.iexapis.com/stable/stock/${json[1].symbol}/quote/?token=${APIurls[2]}`)
-            .then(response => response.json())
-            .then(json => {
-                console.log(json.latestPrice)
-                console.log(json.companyName)
-                $("#stockPrice").html(`Latest Stock Price: ${json.latestPrice}`) ;
-            })
-            }, 500000)
-
-   
-
-
-
-        
-    let notAbleToBuy = $("#overPurchaseWarningMessage").is(":visible");
-    if(notAbleToBuy){
-        return
-    }else{
-        let stockName = currentUser.currentStockAwaitingPurchase.name;
-        let stockSymbol = currentUser.currentStockAwaitingPurchase.symbol;
-        
-        let sharesToBuy = Number($("#numSharesToPurchaseField").val());
-        $("#successPurchaseMessage").html(`You purchased ${sharesToBuy} shares of ${stockName}!`)
-        $("#successPurchaseMessage").show();
-       currentUser.buyStock(stockName, stockSymbol, sharesToBuy, currentUser.getStockLatestPrice)
-    }
-
-
-$("#numSharesToPurchaseField").keyup(function(e){
-    
-    let numSharesToPurchase = Number($("#numSharesToPurchaseField").val()).toFixed(0);
-    let latestPrice = Number($("#exampleModalCenterTitle2 span").html()).toFixed(2);
-    let total = Number(numSharesToPurchase) * Number(latestPrice);
-    let cashRemaining = Number(currentUser.cash - total).toFixed(2);
-    if(cashRemaining <= 0){
-        $("#overPurchaseWarningMessage").show();
-    }else{
-        $("#overPurchaseWarningMessage").hide();
-    }
-    
-    $("#totalSharesWantingToPurchase").html(`${numSharesToPurchase} X ${latestPrice}`);
-    $("#totalSharePurchasePrice").html(`$${total.toFixed(2)}`)
-    $("#totalCashRemaining").html(`$${cashRemaining}`)
-
-})
-
-$("#goHome").click(function(e){
-    window.location.href = "dashboard.html";
-})
-
-
-
-// Create line graph
-async function createLineGraph(){
-    let currentPortfolioData = await currentUser.getPortfolioData();
-    let totalPortfolioValue = currentPortfolioData.totalPortfolioValue;
-    let compNames = currentPortfolioData.companys.map(comp => comp.name)
-    let compPercentages = currentPortfolioData.companys.map(comp => ((comp.totalSharesValue / totalPortfolioValue) * 100).toFixed(2))
-    let moreColors = ["#FFEC21","#378AFF","#FFA32F","#F54F52","#93F03B","#9552EA","#5DADEC","#FF007C"]
-    const ctx = document.getElementById('myChart').getContext('2d');
-    const ctx2 = document.getElementById('myPie').getContext('2d');
- const chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'line',
-
-    // The data for our dataset
-    data: {
-        labels: ['Day 1', 'Today'],
-        datasets: [{
-            label: 'Portfolio Value',
-            backgroundColor: 'blue',
-            borderColor: 'blue',
-            data: [10000, totalPortfolioValue],
-            fill: false
-        }]
-    },
-
-    // Configuration options go here
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    // Include a dollar sign in the ticks
-                    callback: function(value, index, values) {
-                        return '$' + value;
-                    }
-                }
-            }]
-        },
-        title: {
-            display: true,
-            text: 'Change in Portfolio Value'
-        }
-    }
-});
-
-const pie = new Chart(ctx2, {
-    // The type of chart we want to create
-    type: 'pie',
-
-    // The data for our dataset
-    data: {
-        labels: [...compNames,"Cash"],
-        datasets: [{
-            label: 'Portfolio Value',
-            backgroundColor: moreColors,
-            data: [...compPercentages, ((currentUser.cash/totalPortfolioValue) *100).toFixed(2)],
-            fill: false
-        }]
-    },
-
-    // Configuration options go here
-    options: {
-        title: {
-            display: true,
-            text: 'Percentages of Total Portfolio'
-        },
-        legend: {
-            display: true,
-            labels: {
-                
-            }
-        },
-        
-    }
-});
-
-
-
-}
-createLineGraph()
-
 
 })
